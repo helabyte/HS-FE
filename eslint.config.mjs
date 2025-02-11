@@ -9,6 +9,9 @@ export default [
   },
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
+    plugins: {
+      'simple-import-sort': require('eslint-plugin-simple-import-sort'),
+    },
     rules: {
       '@nx/enforce-module-boundaries': [
         'error',
@@ -23,6 +26,49 @@ export default [
           ],
         },
       ],
+      "simple-import-sort/imports": [
+        "error",
+        {
+          "groups": [
+            // Angular related packages come first.
+            [
+              "^@angular", "^react"
+            ],
+            // RxJS imports.
+            [
+              "^rxjs", "^react-native"
+            ],
+            // Third-party packages.
+            [
+              "^@?\\w"
+            ],
+            // Side effect imports.
+            [
+              "^\\u0000"
+            ],
+            // Absolute imports with the prefix @ui.
+            [
+              "^@hela"
+            ],
+            // Parent imports. Put `..` last.
+            [
+              "^\\.\\.(?!/?$)",
+              "^\\.\\./?$"
+            ],
+            // Other relative imports. Put same-folder imports and `.` last.
+            [
+              "^\\./(?=.*/)(?!/?$)",
+              "^\\.(?!/?$)",
+              "^\\./?$"
+            ],
+            // Style imports.
+            [
+              "^.+\\.s?css$"
+            ]
+          ]
+        }
+      ],
+      "simple-import-sort/exports": "error",
     },
   },
   {
