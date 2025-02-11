@@ -1,4 +1,5 @@
 import nx from '@nx/eslint-plugin';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default [
   ...nx.configs['flat/base'],
@@ -10,7 +11,7 @@ export default [
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     plugins: {
-      'simple-import-sort': require('eslint-plugin-simple-import-sort'),
+      'simple-import-sort': simpleImportSort,
     },
     rules: {
       '@nx/enforce-module-boundaries': [
