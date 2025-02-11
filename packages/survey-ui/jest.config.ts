@@ -1,8 +1,8 @@
 export default {
-  displayName: 'shared',
+  displayName: 'survey-ui',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/packages/shared',
+  coverageDirectory: '../../coverage/packages/survey-ui',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
