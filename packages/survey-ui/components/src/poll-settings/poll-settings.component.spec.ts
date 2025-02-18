@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { PollSettingsComponent } from './poll-settings.component';
 
 describe('PollSettingsComponent', () => {

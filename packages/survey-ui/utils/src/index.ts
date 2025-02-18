@@ -1,1 +1,1 @@
-export * from './form-definition-types';
+export default {};
