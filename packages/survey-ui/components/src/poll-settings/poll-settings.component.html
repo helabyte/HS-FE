@@ -7,7 +7,7 @@
       Configure how your poll will behave and what participants can see.
     </p>
 
-    <form [formGroup]="pollSettingsForm">
+    <form [formGroup]="pollSettingsForm" (ngSubmit)="onSubmit()">
       <div class="mb-4">
         <div class="flex items-center justify-between mb-1">
           <div>

@@ -9,14 +9,20 @@
       Select the most suitable chart type to represent your data
     </p>
 
-    <form [formGroup]="visualizationForm" class="space-y-6">
+    <form
+      [formGroup]="visualizationForm"
+      (ngSubmit)="onSubmit()"
+      class="space-y-6"
+    >
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Pie Chart Card -->
         <mat-card
           class="shadow-md rounded-lg overflow-hidden cursor-pointer"
           (click)="selectChartType('pie')"
-          [class.border-2]="visualizationForm.get('chartType')?.value === 'pie'"
-          [class.border-blue-500]="
+          [class.!border-2]="
+            visualizationForm.get('chartType')?.value === 'pie'
+          "
+          [class.!border-blue-500]="
             visualizationForm.get('chartType')?.value === 'pie'
           "
         >
@@ -35,8 +41,10 @@
         <mat-card
           class="shadow-md rounded-lg overflow-hidden cursor-pointer"
           (click)="selectChartType('bar')"
-          [class.border-2]="visualizationForm.get('chartType')?.value === 'bar'"
-          [class.border-blue-500]="
+          [class.!border-2]="
+            visualizationForm.get('chartType')?.value === 'bar'
+          "
+          [class.!border-blue-500]="
             visualizationForm.get('chartType')?.value === 'bar'
           "
         >
@@ -55,10 +63,10 @@
         <mat-card
           class="shadow-md rounded-lg overflow-hidden cursor-pointer"
           (click)="selectChartType('line')"
-          [class.border-2]="
+          [class.!border-2]="
             visualizationForm.get('chartType')?.value === 'line'
           "
-          [class.border-blue-500]="
+          [class.!border-blue-500]="
             visualizationForm.get('chartType')?.value === 'line'
           "
         >

@@ -1,7 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, input, output } from '@angular/core';
 import {
-  FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -10,6 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 
+import { QuestionType } from '@hela/survey-ui/types';
+
 @Component({
   selector: 'hls-visualization-type',
   imports: [MatCardModule, MatButtonModule, ReactiveFormsModule, RouterModule],
@@ -17,13 +18,16 @@ import { RouterModule } from '@angular/router';
   styleUrl: './visualization-type.component.scss',
 })
 export class VisualizationTypeComponent {
-  visualizationForm: FormGroup;
+  chartType = input<string>();
+  submitEvent = output<Pick<QuestionType, 'chartType'>>();
 
-  constructor(private fb: FormBuilder) {
-    this.visualizationForm = this.fb.group({
-      chartType: ['', Validators.required], // Added chartType control
-    });
-  }
+  visualizationForm = new FormGroup({
+    chartType: new FormControl('', Validators.required),
+  });
+
+  chartTypeEff = effect(() => {
+    this.visualizationForm.patchValue({ chartType: this.chartType() || 'pie' });
+  });
 
   selectChartType(type: string): void {
     this.visualizationForm.get('chartType')?.setValue(type);
@@ -32,6 +36,7 @@ export class VisualizationTypeComponent {
   onSubmit(): void {
     if (this.visualizationForm.valid) {
       console.log('Form Value:', this.visualizationForm.value);
+      this.submitEvent.emit(this.visualizationForm.value);
       // Here you would handle the form submission (e.g., send data to an API)
     }
   }

@@ -1,8 +1,9 @@
 import { isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 
+import { appConfig } from '@hela/survey-ui/features';
+
 import { AppComponent } from './app/app.component';
-import { appConfig } from './app/app.config';
 import { makeServer } from './mirage/config';
 
 if (isDevMode()) {

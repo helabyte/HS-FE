@@ -8,26 +8,6 @@ export function makeServer({ environment = 'test' } = {}) {
       question: Model,
     },
 
-    seeds(server) {
-      server.create('question', {
-        id: '1',
-        text: 'What is your favorite color?',
-        type: 'text',
-      });
-      server.create('question', {
-        id: '2',
-        text: 'Do you like pizza?',
-        type: 'radio',
-        options: ['Yes', 'No'],
-      });
-      server.create('question', {
-        id: '3',
-        text: 'Which fruits do you like?',
-        type: 'checkbox',
-        options: ['Apple', 'Banana', 'Orange'],
-      });
-    },
-
     routes() {
       this.namespace = 'api'; // Important:  Match the apiUrl in Angular Service
       this.timing = 400; // Optional delay for simulating real API calls

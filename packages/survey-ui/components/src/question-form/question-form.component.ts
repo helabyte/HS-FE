@@ -1,8 +1,9 @@
 import { NgClass, NgForOf, NgIf } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -13,6 +14,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+
+import { SafeAnyType } from '@hela/survey-ui/types';
 
 import { OptionDialogComponent } from '../option-dialog/option-dialog.component';
 
@@ -33,20 +36,33 @@ import { OptionDialogComponent } from '../option-dialog/option-dialog.component'
   templateUrl: './question-form.component.html',
   styleUrl: './question-form.component.scss',
 })
-export class QuestionFormComponent implements OnInit {
-  questionForm!: FormGroup;
+export class QuestionFormComponent {
+  questionText = input<string>();
+  options = input<{ label: string; value: SafeAnyType }[]>();
+  submitEvent = output<
+    Partial<{
+      questionText: string;
+      options: { label: string; value: SafeAnyType }[];
+    }>
+  >();
+
+  questionForm = new FormGroup({
+    questionText: new FormControl('', Validators.required),
+    options: new FormArray([]),
+  });
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
 
-  ngOnInit(): void {
-    this.questionForm = this.fb.group({
-      questionText: ['', Validators.required],
-      options: this.fb.array([]), // Start with an empty FormArray
-    });
-
-    // Add a default option (optional)
-    this.addOption();
-  }
+  questionTextEff = effect(() => {
+    this.questionForm.patchValue({ questionText: this.questionText() || '' });
+  });
+  optionsEff = effect(() => {
+    if (!this.options() && this.options().length === 0) {
+      this.addOption();
+    } else {
+      this.questionForm.patchValue({ options: this.options() || [] });
+    }
+  });
 
   get optionForms() {
     return this.questionForm.get('options') as FormArray;
@@ -96,6 +112,7 @@ export class QuestionFormComponent implements OnInit {
   continue(): void {
     if (this.questionForm.valid) {
       console.log('Continuing:', this.questionForm.value);
+      this.submitEvent.emit(this.questionForm.value);
     } else {
       this.questionForm.markAllAsTouched();
     }
