@@ -16,6 +16,13 @@ export const appRoutes: Route[] = [
         redirectTo: 'questions/create',
       },
       {
+        path: 'my-account',
+        loadComponent: () =>
+          import('./my-account-page/my-account-page.component').then(
+            (c) => c.MyAccountPageComponent
+          ),
+      },
+      {
         path: 'questions',
         children: [
           {

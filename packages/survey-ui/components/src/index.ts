@@ -1,5 +1,4 @@
-export default {};
-
+export * from './my-account/my-account.component';
 export * from './option-dialog/option-dialog.component';
 export * from './poll-settings/poll-settings.component';
 export * from './question-assignment/question-assignment.component';
