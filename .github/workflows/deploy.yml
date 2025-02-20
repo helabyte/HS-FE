@@ -3,7 +3,7 @@ name: Deploy Angular App to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - main  # Change if using a different branch
 
 jobs:
   deploy:
@@ -23,14 +23,14 @@ jobs:
       - name: Build the Angular App
         run: npx nx build sandbox --base-href="/HS-FE/"
 
-      - name: Move files to Root (GitHub Pages Fix)
+      - name: Fix Deployment Structure (Move index.html)
         run: |
           mkdir gh-pages
-          mv dist/apps/sandbox/browser/* gh-pages/
-          mv gh-pages/index.html gh-pages/404.html  # Fix for Angular SPA navigation
+          cp -r dist/apps/sandbox/browser/* gh-pages/
+          cp gh-pages/index.html gh-pages/404.html  # Fix for Angular SPA navigation
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: gh-pages  # Deploy the root directory
+          folder: gh-pages  # Deploy from the correct folder
