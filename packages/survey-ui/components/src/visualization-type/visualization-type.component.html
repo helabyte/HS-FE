@@ -1,0 +1,115 @@
+<div
+  class="bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+>
+  <div class="max-w-5xl w-full space-y-8">
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      Choose Your Visualization Type
+    </h2>
+    <p class="mt-2 text-center text-sm text-gray-600">
+      Select the most suitable chart type to represent your data
+    </p>
+
+    <form
+      [formGroup]="visualizationForm"
+      (ngSubmit)="onSubmit()"
+      class="space-y-6"
+    >
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Pie Chart Card -->
+        <mat-card
+          class="shadow-md rounded-lg overflow-hidden cursor-pointer"
+          (click)="selectChartType('pie')"
+          [class.!border-2]="
+            visualizationForm.get('chartType')?.value === 'pie'
+          "
+          [class.!border-blue-500]="
+            visualizationForm.get('chartType')?.value === 'pie'
+          "
+        >
+          <mat-card-content class="p-6">
+            <div class="h-40 bg-gray-100 rounded-md mb-4">
+              <!-- Placeholder for Pie Chart -->
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">Pie Chart</h3>
+            <p class="text-gray-700">
+              Best for showing proportions and percentages of a whole
+            </p>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Bar Chart Card -->
+        <mat-card
+          class="shadow-md rounded-lg overflow-hidden cursor-pointer"
+          (click)="selectChartType('bar')"
+          [class.!border-2]="
+            visualizationForm.get('chartType')?.value === 'bar'
+          "
+          [class.!border-blue-500]="
+            visualizationForm.get('chartType')?.value === 'bar'
+          "
+        >
+          <mat-card-content class="p-6">
+            <div class="h-40 bg-gray-100 rounded-md mb-4">
+              <!-- Placeholder for Bar Chart -->
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">Bar Chart</h3>
+            <p class="text-gray-700">
+              Perfect for comparing quantities across different categories
+            </p>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Line Chart Card -->
+        <mat-card
+          class="shadow-md rounded-lg overflow-hidden cursor-pointer"
+          (click)="selectChartType('line')"
+          [class.!border-2]="
+            visualizationForm.get('chartType')?.value === 'line'
+          "
+          [class.!border-blue-500]="
+            visualizationForm.get('chartType')?.value === 'line'
+          "
+        >
+          <mat-card-content class="p-6">
+            <div class="h-40 bg-gray-100 rounded-md mb-4">
+              <!-- Placeholder for Line Chart -->
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">Line Chart</h3>
+            <p class="text-gray-700">
+              Ideal for showing trends and changes over time
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="flex justify-between">
+        <button
+          mat-raised-button
+          color="default"
+          class="bg-gray-200 hover:bg-gray-300"
+        >
+          Back
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          class="bg-blue-600 hover:bg-blue-700 text-white"
+          type="submit"
+          [disabled]="visualizationForm.invalid"
+        >
+          Continue
+        </button>
+      </div>
+    </form>
+
+    <div class="bg-blue-50 p-4 rounded-md">
+      <h4 class="text-lg font-semibold text-blue-800 mb-2">
+        Need Help Choosing?
+      </h4>
+      <p class="text-blue-700">
+        Not sure which chart type is best for your data? Click on any chart type
+        to see more details and examples of when to use it.
+      </p>
+    </div>
+  </div>
+</div>
