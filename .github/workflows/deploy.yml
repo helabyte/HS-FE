@@ -16,9 +16,9 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build the Angular App
-        run: npx nx build sandbox --base-href="https://helabyte.github.io/HS-FE/"
+        run: npx nx build sandbox --base-href="/HS-FE/"
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/apps/sandbox
+          folder: dist/apps/sandbox/browser
