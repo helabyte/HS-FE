@@ -1,0 +1,16 @@
+<div class="poll-container">
+  <div class="poll-option" *ngFor="let option of pollOptions">
+    <div class="option-label">{{ option.label }}</div>
+    <div class="votes-and-bar">
+      <div class="votes-text">{{ option.votes }} votes</div>
+      <div class="progress-bar-container">
+        <div
+          class="progress-bar"
+          [style.width.%]="option.percentage"
+          [ngClass]="getBarColorClass(option.label)"
+        ></div>
+      </div>
+      <div class="percentage-text">{{ option.percentage }}%</div>
+    </div>
+  </div>
+</div>

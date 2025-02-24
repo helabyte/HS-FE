@@ -15,7 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
-import { SafeAnyType } from '@hela/survey-ui/types';
+import { QuestionOptionType, SafeAnyType } from '@hela/survey-ui/types';
 
 import { OptionDialogComponent } from '../option-dialog/option-dialog.component';
 
@@ -38,7 +38,7 @@ import { OptionDialogComponent } from '../option-dialog/option-dialog.component'
 })
 export class QuestionFormComponent {
   questionText = input<string>();
-  options = input<{ label: string; value: SafeAnyType }[]>();
+  options = input<QuestionOptionType[]>();
   submitEvent = output<
     Partial<{
       questionText: string;

@@ -5,6 +5,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { SafeAnyType } from '@hela/survey-ui/types';
 
 @Component({
   selector: 'hls-poll-settings',
@@ -22,8 +23,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 export class PollSettingsComponent {
   resultsVisibility = input<boolean | null>();
   public = input<boolean | null>();
-  startDay = input<Date | null>();
-  endDay = input<Date | null>();
+  startDay = input<Date | null | SafeAnyType>();
+  endDay = input<Date | null| SafeAnyType>();
 
   submitEvent = output<
     Partial<{

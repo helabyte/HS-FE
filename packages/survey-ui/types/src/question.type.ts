@@ -10,13 +10,14 @@ type QuestionType = {
   additionalOptions?: string;
   resultsVisibility?: boolean;
   public?: boolean;
-  startDay?: Date;
-  endDay?: Date;
+  startDay?: Date | string;
+  endDay?: Date | string;
 };
 type QuestionOptionType = {
   inputType: string;
   label: string;
-  value: SafeAnyType;
+  value?: SafeAnyType;
+  votes?: number
 };
 
 export type { QuestionOptionType, QuestionType };

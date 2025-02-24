@@ -1,0 +1,49 @@
+<!-- question-viewer-page.component.html -->
+<div class="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto relative">
+  <!-- Share Icon (Top Right) -->
+  <div class="absolute top-2 right-2">
+    <!-- Replace this with your actual share icon/button -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="w-6 h-6 text-blue-500 cursor-pointer"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
+      />
+    </svg>
+  </div>
+
+  <ng-container *ngIf="question()">
+    <hls-question-viewer
+      *ngIf="!submitted"
+      [questionData]="question()"
+
+      (submitEvent)="handleSubmitResponse($event)"
+    ></hls-question-viewer>
+
+    <hls-chart-viewer
+      *ngIf="submitted"
+      [chartData]="updatedQuestionData"
+    ></hls-chart-viewer>
+  </ng-container>
+
+
+  <div
+    *ngIf="!submitted"
+    class="flex justify-between text-sm text-gray-600 mt-4"
+  >
+    <div>Total votes: {{ totalVotes }}</div>
+    <div>Poll ends in: {{ hoursRemaining }} hours</div>
+  </div>
+
+  <!-- Exit Button -->
+  <div class="mt-4 flex justify-center">
+    <button mat-button>Exit</button>
+  </div>
+</div>

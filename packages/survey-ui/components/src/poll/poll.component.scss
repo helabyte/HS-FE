@@ -1,0 +1,34 @@
+.poll-container {
+  @apply flex flex-col gap-4 p-4; /* Vertical layout, spacing, padding */
+  /* max-w-md mx-auto;  Optional: Center and limit width */
+}
+
+.poll-option {
+  @apply flex flex-col gap-1; /* Vertical layout for label and bar/votes */
+}
+
+.option-label {
+  @apply text-sm font-medium; /* Font styling for the language name */
+}
+
+.votes-and-bar {
+  @apply flex items-center gap-2;
+}
+
+.votes-text {
+  @apply text-sm text-gray-800 min-w-[65px]; /* Vote count styling */
+}
+
+.progress-bar-container {
+  @apply flex-grow bg-gray-100 rounded-full h-5 overflow-hidden; /* Container for the bar */
+  /*width: calc(100% - 81px);*/
+  width: 100%;
+}
+
+.progress-bar {
+  @apply h-full rounded-full transition-all duration-300; /* The colored bar itself */
+}
+
+.percentage-text {
+  @apply text-sm text-gray-800 min-w-[30px]; /* Percentage styling */
+}

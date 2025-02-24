@@ -1,0 +1,26 @@
+<div *ngIf="questionData" class="question-viewer">
+
+  <h3 *ngIf="viewerForm.get('questionText')">
+    {{ viewerForm.get('questionText').value }}
+  </h3>
+
+  <div *ngIf="optionsFormArray.controls.length > 0">
+    <div *ngFor="let optionControl of optionsFormArray.controls; let i = index">
+      <ng-container [formGroup]="castFormGroup(optionControl)">
+        <ng-container [ngSwitch]="optionControl.get('inputType')?.value">
+          <mat-form-field *ngSwitchCase="'text'" class="w-full">
+            <mat-label>{{ optionControl.get('label')?.value }}</mat-label>
+            <input matInput formControlName="value" />
+          </mat-form-field>
+
+          <mat-checkbox *ngSwitchCase="'checkbox'" formControlName="value">
+            {{ optionControl.get('label')?.value }}
+          </mat-checkbox>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <div>
+    <button mat-button (click)="onSubmit()">Submit</button>
+  </div>
+</div>

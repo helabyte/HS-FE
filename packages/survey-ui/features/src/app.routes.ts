@@ -67,6 +67,14 @@ export const appRoutes: Route[] = [
                     './question-assignment-page/question-assignment-page.component'
                   ).then((c) => c.QuestionAssignmentPageComponent),
               },
+              {
+                path: 'viewer',
+                loadComponent: () =>
+                  import(
+                    './question-viewer-page/question-viewer-page.component'
+                  ).then((c) => c.QuestionViewerPageComponent
+                  ),
+              },
             ],
           },
         ],

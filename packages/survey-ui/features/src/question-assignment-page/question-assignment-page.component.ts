@@ -3,6 +3,7 @@ import { Component, inject, input } from '@angular/core';
 import { QuestionAssignmentComponent } from '@hela/survey-ui/components';
 import { QuestionDataService } from '@hela/survey-ui/services';
 import { QuestionType } from '@hela/survey-ui/types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'hls-question-assignment-page',
@@ -14,6 +15,7 @@ export class QuestionAssignmentPageComponent {
   question = input<QuestionType>();
 
   private questionDataService = inject(QuestionDataService);
+  private router = inject(Router);
 
   onSubmit(
     value: Partial<{
@@ -27,7 +29,7 @@ export class QuestionAssignmentPageComponent {
       .subscribe({
         next: ({ question }) => {
           console.log('res', question);
-          // this.router.navigate([question.id]);
+          this.router.navigate(['questions', question.id, 'viewer']);
         },
       });
   }
