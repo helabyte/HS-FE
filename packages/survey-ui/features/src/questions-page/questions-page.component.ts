@@ -57,10 +57,9 @@ export class QuestionsPageComponent implements OnInit {
           startDate: questionData.startDate || questionData.startDay, //Handle startDay/startDate
           endDate: questionData.endDate || questionData.endDay, //Handle endDay/endDate
         };
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
+
         Object.keys(question).forEach((key) =>
-          question[key] === undefined ? delete question[key] : {}
+          (question as SafeAnyType)[key] === undefined ? delete (question as SafeAnyType)[key] : {}
         );
 
         result.push(question);
