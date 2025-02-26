@@ -5,7 +5,6 @@ export * from './lib/poll/poll.component';
 export * from './lib/poll-settings/poll-settings.component';
 export * from './lib/question-assignment/question-assignment.component';
 export * from './lib/question-form/question-form.component';
+export * from './lib/question-table/question-table.component';
 export * from './lib/question-viewer/question-viewer.component';
 export * from './lib/visualization-type/visualization-type.component';
-
-export * from './lib/question-table/question-table.component';

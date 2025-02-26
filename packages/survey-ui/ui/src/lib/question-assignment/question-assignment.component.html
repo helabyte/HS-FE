@@ -16,9 +16,8 @@
           </h3>
           <mat-radio-group formControlName="surveyAssignment" class="space-y-2">
             <mat-radio-button value="standalone"
-            >Standalone Question
-            </mat-radio-button
-            >
+              >Standalone Question
+            </mat-radio-button>
             <mat-radio-button value="assign">Assign to Survey</mat-radio-button>
           </mat-radio-group>
 
@@ -95,7 +94,11 @@
             >
               Save as Draft
             </button>
-            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid && !form.pristine"
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="form.invalid && !form.pristine"
             >
               Publish
             </button>

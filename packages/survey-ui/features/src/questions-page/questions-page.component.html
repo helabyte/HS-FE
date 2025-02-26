@@ -5,9 +5,8 @@
     </mat-card-header>
     <mat-card-content>
       @if (dataSource().length !== 0) {
-        <hls-question-table [data]="dataSource()" />
+      <hls-question-table [data]="dataSource()" />
       }
-
     </mat-card-content>
     <mat-card-actions>
       <a mat-button [routerLink]="['create']">Create Question</a>

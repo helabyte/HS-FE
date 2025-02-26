@@ -17,9 +17,7 @@
                 form.get('questionText')?.invalid
             }"
           />
-          <mat-error
-            *ngIf="form.get('questionText')?.hasError('required')"
-          >
+          <mat-error *ngIf="form.get('questionText')?.hasError('required')">
             Question text is required.
           </mat-error>
         </mat-form-field>

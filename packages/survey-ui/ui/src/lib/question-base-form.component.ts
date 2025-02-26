@@ -1,10 +1,7 @@
-import {
-  Component, output
-} from '@angular/core';
+import { Component, output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { QuestionType } from '@hela/survey-ui/utils';
-
 
 @Component({
   standalone: true,
@@ -24,9 +21,7 @@ export abstract class QuestionBasePageComponent {
   continue(): void {
     if (this.form.valid) {
       console.log('Continuing:', this.form.value);
-      this.submitEvent.emit(
-        this.form.value
-      );
+      this.submitEvent.emit(this.form.value);
     } else {
       this.form.markAllAsTouched();
     }

@@ -1,14 +1,11 @@
 import { Location } from '@angular/common';
-import {
-  Component, inject, input
-} from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router';
 
 import { RealtimeDatabaseService } from '@hela/survey-ui/data-access';
 import { QuestionType } from '@hela/survey-ui/utils';
-
 
 @Component({
   standalone: true,
@@ -28,18 +25,11 @@ export abstract class QuestionBasePageComponent {
   onDraft(value: Partial<QuestionType>) {
     if (this.question()) {
       this.realtimeDatabaseService
-        .update(
-          'questions',
-          this.id(),
-          value
-        )
+        .update('questions', this.id(), value)
         .then(() => this.navigateDraft());
     } else {
       this.realtimeDatabaseService
-        .create(
-          'questions',
-          value
-        )
+        .create('questions', value)
         .then(() => this.navigateDraft());
     }
   }
@@ -47,30 +37,20 @@ export abstract class QuestionBasePageComponent {
   onSubmit(value: Partial<QuestionType>) {
     if (!this.question()) {
       this.realtimeDatabaseService
-        .create(
-          'questions',
-          value
-        )
+        .create('questions', value)
         .then((result) => this.navigateNextStep(result.id));
     } else {
       this.realtimeDatabaseService
-        .update<QuestionType>(
-          'questions',
-          this.id(),
-          value
-        )
+        .update<QuestionType>('questions', this.id(), value)
         .then(() => this.navigateNextStep());
     }
   }
 
-  navigateDraft(){
-    void this.router.navigate([
-      this.localize.parser.currentLang,
-      'questions',
-    ]);
+  navigateDraft() {
+    void this.router.navigate([this.localize.parser.currentLang, 'questions']);
   }
 
-  navigateNextStep(id?: string){
+  navigateNextStep(id?: string) {
     void this.router.navigate([
       this.localize.parser.currentLang,
       'questions',
@@ -79,7 +59,7 @@ export abstract class QuestionBasePageComponent {
     ]);
   }
 
-  navigatePrevStep(){
-    this.location.back()
+  navigatePrevStep() {
+    this.location.back();
   }
 }

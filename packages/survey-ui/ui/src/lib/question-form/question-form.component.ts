@@ -39,7 +39,7 @@ import { QuestionBasePageComponent } from '../question-base-form.component';
   templateUrl: './question-form.component.html',
   styleUrl: './question-form.component.scss',
 })
-export class QuestionFormComponent extends QuestionBasePageComponent{
+export class QuestionFormComponent extends QuestionBasePageComponent {
   questionText = input<string>();
   options = input<QuestionOptionType[]>();
 

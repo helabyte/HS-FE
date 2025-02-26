@@ -7,22 +7,14 @@
       Select the most suitable chart type to represent your data
     </p>
 
-    <form
-      [formGroup]="form"
-      (ngSubmit)="continue()"
-      class="space-y-6"
-    >
+    <form [formGroup]="form" (ngSubmit)="continue()" class="space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Pie Chart Card -->
         <mat-card
           class="shadow-md rounded-lg overflow-hidden cursor-pointer"
           (click)="selectChartType('pie')"
-          [class.!border-2]="
-            form.get('chartType')?.value === 'pie'
-          "
-          [class.!border-blue-500]="
-            form.get('chartType')?.value === 'pie'
-          "
+          [class.!border-2]="form.get('chartType')?.value === 'pie'"
+          [class.!border-blue-500]="form.get('chartType')?.value === 'pie'"
         >
           <mat-card-content class="p-6">
             <div class="h-40 bg-gray-100 rounded-md mb-4">
@@ -39,12 +31,8 @@
         <mat-card
           class="shadow-md rounded-lg overflow-hidden cursor-pointer"
           (click)="selectChartType('bar')"
-          [class.!border-2]="
-            form.get('chartType')?.value === 'bar'
-          "
-          [class.!border-blue-500]="
-            form.get('chartType')?.value === 'bar'
-          "
+          [class.!border-2]="form.get('chartType')?.value === 'bar'"
+          [class.!border-blue-500]="form.get('chartType')?.value === 'bar'"
         >
           <mat-card-content class="p-6">
             <div class="h-40 bg-gray-100 rounded-md mb-4">
@@ -61,12 +49,8 @@
         <mat-card
           class="shadow-md rounded-lg overflow-hidden cursor-pointer"
           (click)="selectChartType('line')"
-          [class.!border-2]="
-            form.get('chartType')?.value === 'line'
-          "
-          [class.!border-blue-500]="
-            form.get('chartType')?.value === 'line'
-          "
+          [class.!border-2]="form.get('chartType')?.value === 'line'"
+          [class.!border-blue-500]="form.get('chartType')?.value === 'line'"
         >
           <mat-card-content class="p-6">
             <div class="h-40 bg-gray-100 rounded-md mb-4">
@@ -97,7 +81,11 @@
           >
             Save as Draft
           </button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid"
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid"
           >
             Continue
           </button>

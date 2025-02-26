@@ -9,6 +9,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 
 import { SafeAnyType } from '@hela/survey-ui/utils';
+
 import { QuestionBasePageComponent } from '../question-base-form.component';
 
 @Component({
@@ -26,7 +27,7 @@ import { QuestionBasePageComponent } from '../question-base-form.component';
   templateUrl: './poll-settings.component.html',
   styleUrl: './poll-settings.component.scss',
 })
-export class PollSettingsComponent extends QuestionBasePageComponent{
+export class PollSettingsComponent extends QuestionBasePageComponent {
   resultsVisibility = input<boolean | null>();
   public = input<boolean | null>();
   startDate = input<Date | null | SafeAnyType>();
@@ -62,5 +63,4 @@ export class PollSettingsComponent extends QuestionBasePageComponent{
     startDate: new FormControl<Date>(null),
     endDate: new FormControl<Date>(null),
   });
-
 }

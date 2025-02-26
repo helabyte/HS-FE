@@ -1,10 +1,16 @@
-import { AfterViewInit, Component, effect, input, viewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  effect,
+  input,
+  viewChild,
+} from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { RouterLink } from '@angular/router';
 
 import { QuestionType } from '@hela/survey-ui/utils';
-import { MatButtonModule } from '@angular/material/button';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'hls-question-table',
