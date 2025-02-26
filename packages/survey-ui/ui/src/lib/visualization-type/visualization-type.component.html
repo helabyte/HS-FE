@@ -8,8 +8,8 @@
     </p>
 
     <form
-      [formGroup]="visualizationForm"
-      (ngSubmit)="onSubmit()"
+      [formGroup]="form"
+      (ngSubmit)="continue()"
       class="space-y-6"
     >
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -18,10 +18,10 @@
           class="shadow-md rounded-lg overflow-hidden cursor-pointer"
           (click)="selectChartType('pie')"
           [class.!border-2]="
-            visualizationForm.get('chartType')?.value === 'pie'
+            form.get('chartType')?.value === 'pie'
           "
           [class.!border-blue-500]="
-            visualizationForm.get('chartType')?.value === 'pie'
+            form.get('chartType')?.value === 'pie'
           "
         >
           <mat-card-content class="p-6">
@@ -40,10 +40,10 @@
           class="shadow-md rounded-lg overflow-hidden cursor-pointer"
           (click)="selectChartType('bar')"
           [class.!border-2]="
-            visualizationForm.get('chartType')?.value === 'bar'
+            form.get('chartType')?.value === 'bar'
           "
           [class.!border-blue-500]="
-            visualizationForm.get('chartType')?.value === 'bar'
+            form.get('chartType')?.value === 'bar'
           "
         >
           <mat-card-content class="p-6">
@@ -62,10 +62,10 @@
           class="shadow-md rounded-lg overflow-hidden cursor-pointer"
           (click)="selectChartType('line')"
           [class.!border-2]="
-            visualizationForm.get('chartType')?.value === 'line'
+            form.get('chartType')?.value === 'line'
           "
           [class.!border-blue-500]="
-            visualizationForm.get('chartType')?.value === 'line'
+            form.get('chartType')?.value === 'line'
           "
         >
           <mat-card-content class="p-6">
@@ -88,15 +88,20 @@
         >
           Back
         </button>
-        <button
-          mat-raised-button
-          color="primary"
-          class="bg-blue-600 hover:bg-blue-700 text-white"
-          type="submit"
-          [disabled]="visualizationForm.invalid"
-        >
-          Continue
-        </button>
+        <div class="flex justify-end space-x-2">
+          <button
+            mat-raised-button
+            color="basic"
+            type="button"
+            (click)="saveAsDraft()"
+          >
+            Save as Draft
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid"
+          >
+            Continue
+          </button>
+        </div>
       </div>
     </form>
   </div>

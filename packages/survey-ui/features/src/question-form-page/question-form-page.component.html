@@ -2,4 +2,5 @@
   [questionText]="question()?.questionText"
   [options]="question()?.options || []"
   (submitEvent)="onSubmit($event)"
+  (draftEvent)="onDraft($event)"
 />

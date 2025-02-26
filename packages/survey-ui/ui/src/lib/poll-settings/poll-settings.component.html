@@ -7,7 +7,7 @@
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="pollSettingsForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="form" (ngSubmit)="continue()">
         <div class="mb-4">
           <div class="flex items-center justify-between mb-1">
             <div>
@@ -125,13 +125,16 @@
         <!-- Actions -->
         <div class="flex justify-between">
           <button mat-button>Back</button>
-          <div>
-            <button mat-button class="mr-2">Save as Draft</button>
+          <div class="flex justify-end space-x-2">
             <button
               mat-raised-button
-              color="primary"
-              type="submit"
-              [disabled]="pollSettingsForm.invalid"
+              color="basic"
+              type="button"
+              (click)="saveAsDraft()"
+            >
+              Save as Draft
+            </button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid"
             >
               Continue
             </button>

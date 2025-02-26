@@ -30,3 +30,16 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
+
+html {
+  @include mat.card-overrides(
+    (
+      container-color: 'white',
+    )
+  );
+  @include mat.table-overrides(
+    (
+      background-color: 'white',
+    )
+  );
+}

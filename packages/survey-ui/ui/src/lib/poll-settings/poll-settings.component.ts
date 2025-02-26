@@ -9,6 +9,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 
 import { SafeAnyType } from '@hela/survey-ui/utils';
+import { QuestionBasePageComponent } from '../question-base-form.component';
 
 @Component({
   selector: 'hls-poll-settings',
@@ -25,57 +26,41 @@ import { SafeAnyType } from '@hela/survey-ui/utils';
   templateUrl: './poll-settings.component.html',
   styleUrl: './poll-settings.component.scss',
 })
-export class PollSettingsComponent {
+export class PollSettingsComponent extends QuestionBasePageComponent{
   resultsVisibility = input<boolean | null>();
   public = input<boolean | null>();
   startDate = input<Date | null | SafeAnyType>();
   endDate = input<Date | null | SafeAnyType>();
 
-  submitEvent = output<
-    Partial<{
-      resultsVisibility: boolean;
-      public: boolean;
-      startDay: Date;
-      endDay: Date;
-    }>
-  >();
-
   resultsVisibilityEff = effect(() =>
-    this.pollSettingsForm.patchValue({
+    this.form.patchValue({
       resultsVisibility: this.resultsVisibility(),
     })
   );
 
   publicEff = effect(() =>
-    this.pollSettingsForm.patchValue({
+    this.form.patchValue({
       public: this.public(),
     })
   );
 
   startDayEff = effect(() =>
-    this.pollSettingsForm.patchValue({
+    this.form.patchValue({
       startDate: this.startDate(),
     })
   );
 
   endDayEff = effect(() =>
-    this.pollSettingsForm.patchValue({
+    this.form.patchValue({
       endDate: this.endDate(),
     })
   );
 
-  pollSettingsForm = new FormGroup({
+  override form = new FormGroup({
     resultsVisibility: new FormControl(true),
     public: new FormControl(false),
     startDate: new FormControl<Date>(null),
     endDate: new FormControl<Date>(null),
   });
 
-  onSubmit(): void {
-    if (this.pollSettingsForm.valid) {
-      console.log('Poll Settings Form:', this.pollSettingsForm.value);
-      this.submitEvent.emit(this.pollSettingsForm.value);
-      // Handle form submission logic here
-    }
-  }
 }

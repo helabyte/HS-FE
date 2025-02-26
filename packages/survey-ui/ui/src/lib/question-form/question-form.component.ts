@@ -16,9 +16,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
-import { QuestionOptionType, QuestionType } from '@hela/survey-ui/utils';
+import { QuestionOptionType } from '@hela/survey-ui/utils';
 
 import { OptionDialogComponent } from '../option-dialog/option-dialog.component';
+import { QuestionBasePageComponent } from '../question-base-form.component';
 
 @Component({
   selector: 'hls-question-form',
@@ -38,12 +39,11 @@ import { OptionDialogComponent } from '../option-dialog/option-dialog.component'
   templateUrl: './question-form.component.html',
   styleUrl: './question-form.component.scss',
 })
-export class QuestionFormComponent {
+export class QuestionFormComponent extends QuestionBasePageComponent{
   questionText = input<string>();
   options = input<QuestionOptionType[]>();
-  submitEvent = output<Pick<QuestionType, 'questionText' | 'options'>>();
 
-  questionForm = new FormGroup({
+  override form = new FormGroup({
     questionText: new FormControl('', Validators.required),
     options: new FormArray([]),
   });
@@ -51,18 +51,20 @@ export class QuestionFormComponent {
   private dialog = inject(MatDialog);
 
   questionTextEff = effect(() => {
-    this.questionForm.patchValue({ questionText: this.questionText() || '' });
+    this.form.patchValue({ questionText: this.questionText() || '' });
   });
   optionsEff = effect(() => {
     if (!this.options() && this.options().length === 0) {
       this.addOption();
     } else {
-      this.questionForm.patchValue({ options: this.options() || [] });
+      for (const option of this.options()) {
+        this.optionForms.push(this.fb.group(option));
+      }
     }
   });
 
   get optionForms() {
-    return this.questionForm.get('options') as FormArray;
+    return this.form.get('options') as FormArray;
   }
 
   openDialog(optionIndex: number | null = null): void {
@@ -100,23 +102,5 @@ export class QuestionFormComponent {
 
   removeOption(index: number): void {
     this.optionForms.removeAt(index);
-  }
-
-  saveAsDraft(): void {
-    console.log('Saving as Draft:', this.questionForm.value);
-  }
-
-  continue(): void {
-    if (this.questionForm.valid) {
-      console.log('Continuing:', this.questionForm.value);
-      this.submitEvent.emit(
-        this.questionForm.value as Pick<
-          QuestionType,
-          'questionText' | 'options'
-        >
-      );
-    } else {
-      this.questionForm.markAllAsTouched();
-    }
   }
 }

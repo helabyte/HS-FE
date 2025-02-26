@@ -13,6 +13,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
 import { QuestionType, SafeAnyType } from '@hela/survey-ui/utils';
+import { QuestionBasePageComponent } from '../question-base-form.component';
 
 @Component({
   selector: 'hls-question-assignment',
@@ -33,43 +34,36 @@ import { QuestionType, SafeAnyType } from '@hela/survey-ui/utils';
   templateUrl: './question-assignment.component.html',
   styleUrl: './question-assignment.component.scss',
 })
-export class QuestionAssignmentComponent {
+export class QuestionAssignmentComponent extends QuestionBasePageComponent {
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
   surveyAssignment = input<string>();
   topics = input<string[]>();
   additionalOptions = input<QuestionType['additionalOptions']>();
 
-  submitEvent = output<
-    | Partial<
-        Pick<QuestionType, 'surveyAssignment' | 'topics' | 'additionalOptions'>
-      >
-    | SafeAnyType
-  >();
-
-  questionForm = new FormGroup({
+  override form = new FormGroup({
     surveyAssignment: new FormControl('standalone'),
     topics: new FormControl([], { nonNullable: true }),
     additionalOptions: new FormGroup({
-      searchable: new FormControl(false),
-      reuse: new FormControl(false),
+      searchable: new FormControl<boolean>(false),
+      reuse: new FormControl<boolean>(false),
     }),
   });
 
   surveyAssignmentEff = effect(() =>
-    this.questionForm.patchValue({
+    this.form.patchValue({
       surveyAssignment: this.surveyAssignment(),
     })
   );
 
   topicEff = effect(() =>
-    this.questionForm.patchValue({
+    this.form.patchValue({
       topics: this.topics() || [],
     })
   );
 
   additionalOptionsEff = effect(() =>
-    this.questionForm.patchValue({
+    this.form.patchValue({
       additionalOptions: this.additionalOptions(),
     })
   );
@@ -89,23 +83,15 @@ export class QuestionAssignmentComponent {
   }
 
   removeTopic(topic: string): void {
-    const topics = (this.questionForm.get('topics').value || []) as string[];
+    const topics = (this.form.get('topics').value || []) as string[];
     const index = topics.indexOf(topic);
     if (index >= 0) {
       topics.splice(index, 1);
     }
-    this.questionForm.get('topics').patchValue(topics);
-  }
-
-  onSubmit(): void {
-    if (this.questionForm.valid) {
-      console.log('Question Form:', this.questionForm.value);
-      this.submitEvent.emit(this.questionForm.value);
-      // Handle form submission logic here
-    }
+    this.form.get('topics').patchValue(topics);
   }
 
   get topicsControl() {
-    return this.questionForm.get('topics') as FormControl;
+    return this.form.get('topics') as FormControl;
   }
 }

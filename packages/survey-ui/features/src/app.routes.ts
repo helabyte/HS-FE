@@ -35,6 +35,13 @@ export const appRoutes: Route[] = [
               ),
             children: [
               {
+                path: '',
+                loadComponent: () =>
+                  import('./questions-page/questions-page.component').then(
+                    (c) => c.QuestionsPageComponent
+                  ),
+              },
+              {
                 path: 'create',
                 loadComponent: () =>
                   import(
@@ -49,7 +56,7 @@ export const appRoutes: Route[] = [
                 runGuardsAndResolvers: 'always',
                 children: [
                   {
-                    path: 'question-form',
+                    path: '',
                     loadComponent: () =>
                       import(
                         './question-form-page/question-form-page.component'
