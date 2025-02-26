@@ -23,7 +23,6 @@
     <hls-question-viewer
       *ngIf="!submitted"
       [questionData]="question()"
-
       (submitEvent)="handleSubmitResponse($event)"
     ></hls-question-viewer>
 
@@ -32,7 +31,6 @@
       [chartData]="updatedQuestionData"
     ></hls-chart-viewer>
   </ng-container>
-
 
   <div
     *ngIf="!submitted"

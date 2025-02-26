@@ -1,11 +1,17 @@
-import { NgForOf, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component, input, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
-import { ChartViewerComponent, QuestionViewerComponent } from '@hela/survey-ui/components';
-import { QuestionType } from '@hela/survey-ui/types';
-import { getRandomNumber } from '@hela/survey-ui/utils';
+import {
+  ChartViewerComponent,
+  QuestionViewerComponent,
+} from '@hela/survey-ui/ui';
+import {
+  getRandomNumber,
+  QuestionType,
+  SafeAnyType,
+} from '@hela/survey-ui/utils';
 
 @Component({
   selector: 'hls-question-viewer-page',
@@ -13,7 +19,6 @@ import { getRandomNumber } from '@hela/survey-ui/utils';
   imports: [
     QuestionViewerComponent,
     ChartViewerComponent,
-    NgForOf,
     MatButtonModule,
     FormsModule,
     NgIf,
@@ -24,7 +29,7 @@ import { getRandomNumber } from '@hela/survey-ui/utils';
 export class QuestionViewerPageComponent implements OnInit {
   question = input<QuestionType>();
   submitted = false; // Flag to track submission
-  updatedQuestionData: any; // To store updated data for the chart
+  updatedQuestionData: SafeAnyType; // To store updated data for the chart
 
   questionData = signal<QuestionType | null>(null);
 
@@ -34,20 +39,23 @@ export class QuestionViewerPageComponent implements OnInit {
   ngOnInit() {
     this.questionData.set({
       ...this.question(),
-      options: this.question().options?.map(option => ({...option, votes: getRandomNumber(150)})),
+      options: this.question().options?.map((option) => ({
+        ...option,
+        votes: getRandomNumber(150),
+      })),
     });
 
     this.updatedQuestionData = this.questionData();
   }
 
-  handleSubmitResponse(response: any) {
+  handleSubmitResponse(response: SafeAnyType) {
     // Create a deep copy of the original question data to avoid modifying the input directly
     const updatedData = JSON.parse(JSON.stringify(this.questionData()));
 
     // Update vote counts based on the user's response
-    response.options.forEach((responseOption: any) => {
+    response.options.forEach((responseOption: SafeAnyType) => {
       const optionToUpdate = updatedData.options.find(
-        (opt: any) => opt.label === responseOption.label
+        (opt: SafeAnyType) => opt.label === responseOption.label
       );
 
       if (optionToUpdate) {

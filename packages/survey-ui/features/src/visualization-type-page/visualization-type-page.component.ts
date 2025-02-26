@@ -1,9 +1,11 @@
 import { Component, effect, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { VisualizationTypeComponent } from '@hela/survey-ui/components';
-import { QuestionDataService } from '@hela/survey-ui/services';
-import { QuestionType } from '@hela/survey-ui/types';
+import { LocalizeRouterService } from '@gilsdav/ngx-translate-router';
+
+import { RealtimeDatabaseService } from '@hela/survey-ui/data-access';
+import { VisualizationTypeComponent } from '@hela/survey-ui/ui';
+import { QuestionType } from '@hela/survey-ui/utils';
 
 @Component({
   selector: 'hls-visualization-type-page',
@@ -12,10 +14,12 @@ import { QuestionType } from '@hela/survey-ui/types';
   styleUrl: './visualization-type-page.component.scss',
 })
 export class VisualizationTypePageComponent {
+  id = input<string>();
   question = input<QuestionType>();
 
-  private questionDataService = inject(QuestionDataService);
+  private realtimeDatabaseService = inject(RealtimeDatabaseService);
   private router = inject(Router);
+  private localize = inject(LocalizeRouterService);
 
   constructor() {
     effect(() => {
@@ -24,13 +28,15 @@ export class VisualizationTypePageComponent {
   }
 
   onSubmit(value: Pick<QuestionType, 'chartType'>) {
-    this.questionDataService
-      .updateQuestion({ ...this.question(), chartType: value.chartType })
-      .subscribe({
-        next: ({ question }) => {
-          console.log('res', question);
-          this.router.navigate(['questions', question.id, 'poll-settings']);
-        },
-      });
+    this.realtimeDatabaseService
+      .update('questions', this.id(), value)
+      .then(() =>
+        this.router.navigate([
+          this.localize.parser.currentLang,
+          'questions',
+          this.id(),
+          'poll-settings',
+        ])
+      );
   }
 }

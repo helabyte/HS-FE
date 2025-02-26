@@ -10,7 +10,7 @@
       "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "allowedCommonJsDependencies": ["miragejs"],
+        "allowedCommonJsDependencies": [],
         "outputPath": "dist/apps/sandbox",
         "index": "apps/sandbox/src/index.html",
         "browser": "apps/sandbox/src/main.ts",
@@ -38,6 +38,12 @@
               "type": "anyComponentStyle",
               "maximumWarning": "4kb",
               "maximumError": "8kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/sandbox/src/environments/environment.ts",
+              "with": "apps/sandbox/src/environments/environment.prod.ts"
             }
           ],
           "outputHashing": "all"

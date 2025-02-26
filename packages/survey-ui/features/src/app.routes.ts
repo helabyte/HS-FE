@@ -6,74 +6,84 @@ export const appRoutes: Route[] = [
   {
     path: '',
     loadComponent: () =>
-      import('./dashboard-layout/dashboard-layout.component').then(
-        (c) => c.DashboardLayoutComponent
-      ),
+      import('./shell/shell.component').then((c) => c.ShellComponent),
     children: [
       {
         path: '',
-        pathMatch: 'full',
-        redirectTo: 'questions/create',
-      },
-      {
-        path: 'my-account',
         loadComponent: () =>
-          import('./my-account-page/my-account-page.component').then(
-            (c) => c.MyAccountPageComponent
+          import('./dashboard-layout/dashboard-layout.component').then(
+            (c) => c.DashboardLayoutComponent
           ),
-      },
-      {
-        path: 'questions',
         children: [
           {
-            path: 'create',
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'questions/create',
+          },
+          {
+            path: 'my-account',
             loadComponent: () =>
-              import('./question-form-page/question-form-page.component').then(
-                (c) => c.QuestionFormPageComponent
+              import('./my-account-page/my-account-page.component').then(
+                (c) => c.MyAccountPageComponent
               ),
           },
           {
-            path: ':id',
-            resolve: {
-              question: questionResolver,
-            },
-            runGuardsAndResolvers: 'always',
+            path: 'questions',
+            loadComponent: () =>
+              import('./question-layout/question-layout.component').then(
+                (c) => c.QuestionLayoutComponent
+              ),
             children: [
               {
-                path: 'question-form',
+                path: 'create',
                 loadComponent: () =>
                   import(
                     './question-form-page/question-form-page.component'
                   ).then((c) => c.QuestionFormPageComponent),
               },
               {
-                path: 'visualization-type',
-                loadComponent: () =>
-                  import(
-                    './visualization-type-page/visualization-type-page.component'
-                  ).then((c) => c.VisualizationTypePageComponent),
-              },
-              {
-                path: 'poll-settings',
-                loadComponent: () =>
-                  import(
-                    './poll-settings-page/poll-settings-page.component'
-                  ).then((c) => c.PollSettingsPageComponent),
-              },
-              {
-                path: 'question-assignment',
-                loadComponent: () =>
-                  import(
-                    './question-assignment-page/question-assignment-page.component'
-                  ).then((c) => c.QuestionAssignmentPageComponent),
-              },
-              {
-                path: 'viewer',
-                loadComponent: () =>
-                  import(
-                    './question-viewer-page/question-viewer-page.component'
-                  ).then((c) => c.QuestionViewerPageComponent
-                  ),
+                path: ':id',
+                resolve: {
+                  question: questionResolver,
+                },
+                runGuardsAndResolvers: 'always',
+                children: [
+                  {
+                    path: 'question-form',
+                    loadComponent: () =>
+                      import(
+                        './question-form-page/question-form-page.component'
+                      ).then((c) => c.QuestionFormPageComponent),
+                  },
+                  {
+                    path: 'visualization-type',
+                    loadComponent: () =>
+                      import(
+                        './visualization-type-page/visualization-type-page.component'
+                      ).then((c) => c.VisualizationTypePageComponent),
+                  },
+                  {
+                    path: 'poll-settings',
+                    loadComponent: () =>
+                      import(
+                        './poll-settings-page/poll-settings-page.component'
+                      ).then((c) => c.PollSettingsPageComponent),
+                  },
+                  {
+                    path: 'question-assignment',
+                    loadComponent: () =>
+                      import(
+                        './question-assignment-page/question-assignment-page.component'
+                      ).then((c) => c.QuestionAssignmentPageComponent),
+                  },
+                  {
+                    path: 'viewer',
+                    loadComponent: () =>
+                      import(
+                        './question-viewer-page/question-viewer-page.component'
+                      ).then((c) => c.QuestionViewerPageComponent),
+                  },
+                ],
               },
             ],
           },

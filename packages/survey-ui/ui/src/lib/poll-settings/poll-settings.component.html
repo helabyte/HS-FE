@@ -1,0 +1,143 @@
+<div class="container">
+  <mat-card class="max-w-2xl mx-auto">
+    <mat-card-header class="mb-4">
+      <mat-card-title> Poll Settings </mat-card-title>
+      <mat-card-subtitle>
+        Configure how your poll will behave and what participants can see.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="pollSettingsForm" (ngSubmit)="onSubmit()">
+        <div class="mb-4">
+          <div class="flex items-center justify-between mb-1">
+            <div>
+              <label
+                class="block text-gray-700 text-sm font-bold mb-0"
+                for="resultsVisibility"
+              >
+                Results Visibility
+              </label>
+              <p class="text-gray-500 text-xs">
+                Control when participants can see the poll results after voting
+              </p>
+            </div>
+            <mat-slide-toggle
+              formControlName="resultsVisibility"
+            ></mat-slide-toggle>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <div class="flex items-center justify-between mb-1">
+            <div>
+              <label
+                class="block text-gray-700 text-sm font-bold mb-0"
+                for="public"
+              >
+                Public
+              </label>
+              <p class="text-gray-500 text-xs">
+                Set who can access and participate in your poll
+              </p>
+            </div>
+            <mat-slide-toggle formControlName="public"></mat-slide-toggle>
+          </div>
+        </div>
+
+        <div class="mb-4 flex justify-between items-center gap-4">
+          <div class="flex flex-col max-w-72">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="startDay"
+            >
+              Start day
+            </label>
+            <p class="text-gray-500 text-xs mb-2">
+              This is the date when your poll will officially begin and
+              participants can start submitting their responses.
+            </p>
+          </div>
+          <div class="flex flex-col">
+            <mat-form-field class="max-w-[200px]">
+              <mat-label>Start date</mat-label>
+              <input
+                matInput
+                [matDatepicker]="startDatepicker"
+                formControlName="startDate"
+              />
+              <mat-datepicker #startDatepicker />
+              <mat-datepicker-toggle [for]="startDatepicker" matSuffix />
+            </mat-form-field>
+
+            <mat-form-field class="max-w-[200px]">
+              <mat-label>Start time</mat-label>
+              <input
+                matInput
+                [matTimepicker]="startTimepicker"
+                formControlName="startDate"
+              />
+              <mat-timepicker #startTimepicker />
+              <mat-timepicker-toggle [for]="startTimepicker" matSuffix />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="mb-6 flex justify-between items-center gap-4">
+          <div class="flex flex-col max-w-72">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="endDay"
+            >
+              End day
+            </label>
+            <p class="text-gray-500 text-xs mb-2">
+              The "End Day" option specifies the date on which the poll will
+              automatically close, ensuring that all responses are submitted by
+              this deadline.
+            </p>
+          </div>
+
+          <div class="flex flex-col">
+            <mat-form-field class="max-w-[200px]">
+              <mat-label>End date</mat-label>
+              <input
+                matInput
+                [matDatepicker]="endDatepicker"
+                formControlName="endDate"
+              />
+              <mat-datepicker #endDatepicker />
+              <mat-datepicker-toggle [for]="endDatepicker" matSuffix />
+            </mat-form-field>
+
+            <mat-form-field class="max-w-[200px]">
+              <mat-label>End time</mat-label>
+              <input
+                matInput
+                [matTimepicker]="endTimepicker"
+                formControlName="endDate"
+              />
+              <mat-timepicker #endTimepicker />
+              <mat-timepicker-toggle [for]="endTimepicker" matSuffix />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-between">
+          <button mat-button>Back</button>
+          <div>
+            <button mat-button class="mr-2">Save as Draft</button>
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="pollSettingsForm.invalid"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

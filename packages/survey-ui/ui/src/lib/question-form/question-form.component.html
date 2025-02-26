@@ -1,0 +1,97 @@
+<div class="container">
+  <mat-card class="max-w-2xl mx-auto">
+    <mat-card-header class="mb-4">
+      <mat-card-title> Question </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="questionForm" (ngSubmit)="continue()">
+        <mat-form-field class="w-full mb-4">
+          <mat-label>Question Text</mat-label>
+          <input
+            matInput
+            placeholder="Enter your question"
+            formControlName="questionText"
+            [ngClass]="{
+              'is-invalid':
+                questionForm.get('questionText')?.touched &&
+                questionForm.get('questionText')?.invalid
+            }"
+          />
+          <mat-error
+            *ngIf="questionForm.get('questionText')?.hasError('required')"
+          >
+            Question text is required.
+          </mat-error>
+        </mat-form-field>
+
+        <div formArrayName="options">
+          <div
+            *ngFor="let option of optionForms.controls; let i = index"
+            [formGroupName]="i"
+            class="flex items-center mb-2 space-x-2"
+          >
+            <ng-container
+              *ngIf="optionForms.at(i).get('inputType')?.value === 'text'"
+            >
+              <mat-form-field class="flex-grow">
+                <mat-label>{{
+                  optionForms.at(i).get('label')?.value
+                }}</mat-label>
+                <input
+                  matInput
+                  [value]="optionForms.at(i).get('value')?.value"
+                  readonly
+                />
+              </mat-form-field>
+            </ng-container>
+
+            <ng-container
+              *ngIf="optionForms.at(i).get('inputType')?.value === 'checkbox'"
+            >
+              <mat-checkbox [checked]="optionForms.at(i).get('value')?.value">{{
+                optionForms.at(i).get('label')?.value
+              }}</mat-checkbox>
+            </ng-container>
+
+            <button mat-icon-button (click)="openDialog(i)">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              color="warn"
+              type="button"
+              (click)="removeOption(i)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <button
+          mat-button
+          color="primary"
+          type="button"
+          (click)="addOption()"
+          class="mb-4"
+        >
+          <mat-icon>add</mat-icon> Add Option
+        </button>
+
+        <div class="flex justify-end space-x-2">
+          <button
+            mat-raised-button
+            color="basic"
+            type="button"
+            (click)="saveAsDraft()"
+          >
+            Save as Draft
+          </button>
+          <button mat-raised-button color="primary" type="submit">
+            Continue
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
