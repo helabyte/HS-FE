@@ -33,7 +33,7 @@ export default [
           "groups": [
             // Angular related packages come first.
             [
-              "^@angular", "^react"
+              "^@angular", "^react","^@nestjs"
             ],
             // RxJS imports.
             [
