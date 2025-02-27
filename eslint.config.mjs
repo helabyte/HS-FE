@@ -27,49 +27,30 @@ export default [
           ],
         },
       ],
-      "simple-import-sort/imports": [
-        "error",
+      'simple-import-sort/imports': [
+        'error',
         {
-          "groups": [
+          groups: [
             // Angular related packages come first.
-            [
-              "^@angular", "^react","^@nestjs"
-            ],
+            ['^@angular', '^react', '^@nestjs'],
             // RxJS imports.
-            [
-              "^rxjs", "^react-native"
-            ],
+            ['^rxjs', '^react-native'],
             // Third-party packages.
-            [
-              "^@?\\w"
-            ],
+            ['^@?\\w'],
             // Side effect imports.
-            [
-              "^\\u0000"
-            ],
+            ['^\\u0000'],
             // Absolute imports with the prefix @ui.
-            [
-              "^@hela"
-            ],
+            ['^@hela'],
             // Parent imports. Put `..` last.
-            [
-              "^\\.\\.(?!/?$)",
-              "^\\.\\./?$"
-            ],
+            ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
             // Other relative imports. Put same-folder imports and `.` last.
-            [
-              "^\\./(?=.*/)(?!/?$)",
-              "^\\.(?!/?$)",
-              "^\\./?$"
-            ],
+            ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
             // Style imports.
-            [
-              "^.+\\.s?css$"
-            ]
-          ]
-        }
+            ['^.+\\.s?css$'],
+          ],
+        },
       ],
-      "simple-import-sort/exports": "error",
+      'simple-import-sort/exports': 'error',
     },
   },
   {

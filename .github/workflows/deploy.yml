@@ -3,7 +3,7 @@ name: Deploy Angular App to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change if using a different branch
+      - main # Change if using a different branch
 
 jobs:
   deploy:
@@ -33,4 +33,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: gh-pages  # Deploy from the correct folder
+          folder: gh-pages # Deploy from the correct folder
