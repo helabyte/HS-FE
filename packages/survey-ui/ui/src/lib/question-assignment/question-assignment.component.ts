@@ -53,7 +53,7 @@ export class QuestionAssignmentComponent extends QuestionBasePageComponent {
 
   surveyAssignmentEff = effect(() =>
     this.form.patchValue({
-      surveyAssignment: this.surveyAssignment(),
+      surveyAssignment: this.surveyAssignment() || 'standalone',
     })
   );
 

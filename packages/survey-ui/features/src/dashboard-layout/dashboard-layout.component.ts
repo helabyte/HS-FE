@@ -4,7 +4,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
+
+import { LocalizeRouterPipe } from '@gilsdav/ngx-translate-router';
 
 @Component({
   selector: 'hls-dashboard-layout',
@@ -15,6 +17,8 @@ import { RouterOutlet } from '@angular/router';
     MatSidenavModule,
     MatListModule,
     RouterOutlet,
+    LocalizeRouterPipe,
+    RouterLink,
   ],
   templateUrl: './dashboard-layout.component.html',
   styleUrl: './dashboard-layout.component.scss',

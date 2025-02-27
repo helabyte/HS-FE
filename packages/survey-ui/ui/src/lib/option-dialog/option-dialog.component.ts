@@ -41,7 +41,7 @@ type InputType = {
 })
 export class OptionDialogComponent implements OnInit {
   optionForm: FormGroup;
-  inputTypeControl = new FormControl('text'); // Default input type
+  inputTypeControl = new FormControl('checkbox'); // Default input type
 
   availableInputTypes: InputType[] = [
     { value: 'text', viewValue: 'Text Input' },
@@ -55,8 +55,7 @@ export class OptionDialogComponent implements OnInit {
   ) {
     this.optionForm = this.fb.group({
       label: ['', Validators.required], // Option Label
-      inputType: ['text'],
-      value: [''], // Initial value
+      inputType: ['checkbox'],
     });
 
     if (data && data.option) {

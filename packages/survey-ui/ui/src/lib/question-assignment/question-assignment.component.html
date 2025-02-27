@@ -84,8 +84,10 @@
         </div>
 
         <div class="flex justify-between">
-          <button mat-button>Back</button>
-          <div class="flex justify-end space-x-2">
+          <button mat-button (click)="navigatePrevStep()" type="button">
+            Back
+          </button>
+          <div class="flex justify-end gap-2">
             <button
               mat-raised-button
               color="basic"
@@ -95,7 +97,7 @@
               Save as Draft
             </button>
             <button
-              mat-raised-button
+              mat-flat-button
               color="primary"
               type="submit"
               [disabled]="form.invalid && !form.pristine"

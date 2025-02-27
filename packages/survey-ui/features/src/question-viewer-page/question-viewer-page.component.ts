@@ -2,6 +2,7 @@ import { NgIf } from '@angular/common';
 import { Component, input, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 import {
   ChartViewerComponent,
@@ -22,6 +23,7 @@ import {
     MatButtonModule,
     FormsModule,
     NgIf,
+    MatCardModule,
   ],
   templateUrl: './question-viewer-page.component.html',
   styleUrl: './question-viewer-page.component.scss',

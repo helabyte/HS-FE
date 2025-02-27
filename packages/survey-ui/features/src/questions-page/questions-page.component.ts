@@ -1,7 +1,9 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
+
+import { Subject, tap } from 'rxjs';
 
 import { RealtimeDatabaseService } from '@hela/survey-ui/data-access';
 import { QuestionTableComponent } from '@hela/survey-ui/ui';
@@ -13,21 +15,26 @@ import { QuestionType, SafeAnyType } from '@hela/survey-ui/utils';
   templateUrl: './questions-page.component.html',
   styleUrl: './questions-page.component.scss',
 })
-export class QuestionsPageComponent implements OnInit {
+export class QuestionsPageComponent implements OnInit, OnDestroy {
+  destroyed$ = new Subject<void>();
+
   private realtimeDatabaseService = inject(RealtimeDatabaseService);
   dataSource = signal<QuestionType[]>([]);
-  dataSourceEff = effect(() => {
-    console.log('ds', this.dataSource());
-  });
 
   ngOnInit() {
-    this.realtimeDatabaseService.listen('questions').subscribe({
-      next: (value) => {
-        console.log('value', value);
-        // console.log('value',Object.values(value) as QuestionType[]);
-        this.dataSource.set(this.convertToQuestionTypeArray(value));
-      },
-    });
+    this.realtimeDatabaseService
+      .listen('questions')
+      .pipe(
+        tap((value) =>
+          this.dataSource.set(this.convertToQuestionTypeArray(value))
+        )
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   convertToQuestionTypeArray(
@@ -59,7 +66,9 @@ export class QuestionsPageComponent implements OnInit {
         };
 
         Object.keys(question).forEach((key) =>
-          (question as SafeAnyType)[key] === undefined ? delete (question as SafeAnyType)[key] : {}
+          (question as SafeAnyType)[key] === undefined
+            ? delete (question as SafeAnyType)[key]
+            : {}
         );
 
         result.push(question);

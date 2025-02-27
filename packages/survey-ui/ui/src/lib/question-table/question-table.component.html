@@ -15,11 +15,18 @@
     <th mat-header-cell *matHeaderCellDef>Question</th>
     <td mat-cell *matCellDef="let element">{{ element.questionText }}</td>
   </ng-container>
+  <ng-container matColumnDef="chart">
+    <th mat-header-cell *matHeaderCellDef>Chart</th>
+    <td mat-cell *matCellDef="let element">{{ element.chartType }}</td>
+  </ng-container>
 
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element">
-      <a mat-button [routerLink]="[element.id]">Edit</a>
+      <div class="flex gap-2">
+        <a mat-button [routerLink]="[element.id]">Edit</a>
+        <a mat-button [routerLink]="[element.id, 'viewer']">View</a>
+      </div>
     </td>
   </ng-container>
 

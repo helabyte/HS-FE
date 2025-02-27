@@ -1,4 +1,5 @@
-import { Component, output } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, inject, output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { QuestionType } from '@hela/survey-ui/utils';
@@ -13,6 +14,8 @@ export abstract class QuestionBasePageComponent {
 
   form: FormGroup;
 
+  private location = inject(Location);
+
   saveAsDraft(): void {
     console.log('Saving as Draft:', this.form.value);
     this.draftEvent.emit(this.form.value);
@@ -25,5 +28,9 @@ export abstract class QuestionBasePageComponent {
     } else {
       this.form.markAllAsTouched();
     }
+  }
+
+  navigatePrevStep() {
+    this.location.back();
   }
 }

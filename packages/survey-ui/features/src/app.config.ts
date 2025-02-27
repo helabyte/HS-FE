@@ -48,6 +48,7 @@ export function createTranslateRouteLoader(
 
 export const appConfig = (config: AppConfigType): ApplicationConfig => ({
   providers: [
+    provideAnimationsAsync(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       appRoutes,
@@ -82,7 +83,7 @@ export const appConfig = (config: AppConfigType): ApplicationConfig => ({
     { provide: APP_CONFIG_TOKEN, useValue: config },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: { appearance: 'fill' },
+      useValue: { appearance: 'outline' },
     },
   ],
 });

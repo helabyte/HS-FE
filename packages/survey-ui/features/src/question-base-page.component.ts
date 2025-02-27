@@ -18,7 +18,6 @@ export abstract class QuestionBasePageComponent {
   private realtimeDatabaseService = inject(RealtimeDatabaseService);
   private router = inject(Router);
   private localize = inject(LocalizeRouterService);
-  private location = inject(Location);
 
   nextRoute = '';
 
@@ -57,9 +56,5 @@ export abstract class QuestionBasePageComponent {
       id || this.id(),
       this.nextRoute,
     ]);
-  }
-
-  navigatePrevStep() {
-    this.location.back();
   }
 }

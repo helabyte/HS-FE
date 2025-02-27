@@ -1,11 +1,18 @@
+import {
+  CdkDragDrop,
+  DragDropModule,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop'; // Import Drag and Drop
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { Component, effect, inject, input, output } from '@angular/core';
 import {
+  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,6 +42,7 @@ import { QuestionBasePageComponent } from '../question-base-form.component';
     NgForOf,
     MatDialogModule,
     MatCardModule,
+    DragDropModule, // Add DragDropModule
   ],
   templateUrl: './question-form.component.html',
   styleUrl: './question-form.component.scss',
@@ -45,7 +53,7 @@ export class QuestionFormComponent extends QuestionBasePageComponent {
 
   override form = new FormGroup({
     questionText: new FormControl('', Validators.required),
-    options: new FormArray([]),
+    options: new FormArray([], this.minLengthArray(1)),
   });
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
@@ -54,13 +62,19 @@ export class QuestionFormComponent extends QuestionBasePageComponent {
     this.form.patchValue({ questionText: this.questionText() || '' });
   });
   optionsEff = effect(() => {
-    if (!this.options() && this.options().length === 0) {
-      this.addOption();
-    } else {
+    this.optionForms.clear(); // Clear existing options before adding new ones
+    // Add custom validator again, when options are changed
+    this.optionForms.setValidators(this.minLengthArray(1));
+    if (this.options()?.length) {
+      // Check if options exist and is not empty
+
       for (const option of this.options()) {
         this.optionForms.push(this.fb.group(option));
       }
+    } else {
+      this.addOption();
     }
+    this.optionForms.updateValueAndValidity();
   });
 
   get optionForms() {
@@ -102,5 +116,25 @@ export class QuestionFormComponent extends QuestionBasePageComponent {
 
   removeOption(index: number): void {
     this.optionForms.removeAt(index);
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(
+      this.optionForms.controls,
+      event.previousIndex,
+      event.currentIndex
+    );
+    this.optionForms.setValue(
+      this.optionForms.controls.map((control) => control.value)
+    );
+  }
+
+  minLengthArray(min: number): ValidatorFn {
+    return (c: AbstractControl): { [key: string]: any } | null => {
+      if (c.value.length >= min) {
+        return null; // Validation passes
+      }
+      return { minLengthArray: { valid: false, requiredLength: min } }; // Validation fails
+    };
   }
 }

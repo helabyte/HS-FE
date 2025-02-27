@@ -1,5 +1,11 @@
+import { NgIf } from '@angular/common';
 import { Component, effect, input, output } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -23,6 +29,7 @@ import { QuestionBasePageComponent } from '../question-base-form.component';
     MatNativeDateModule,
     MatTimepickerModule,
     MatCardModule,
+    NgIf,
   ],
   templateUrl: './poll-settings.component.html',
   styleUrl: './poll-settings.component.scss',
@@ -35,19 +42,19 @@ export class PollSettingsComponent extends QuestionBasePageComponent {
 
   resultsVisibilityEff = effect(() =>
     this.form.patchValue({
-      resultsVisibility: this.resultsVisibility(),
+      resultsVisibility: this.resultsVisibility() || true,
     })
   );
 
   publicEff = effect(() =>
     this.form.patchValue({
-      public: this.public(),
+      public: this.public() || true,
     })
   );
 
   startDayEff = effect(() =>
     this.form.patchValue({
-      startDate: this.startDate(),
+      startDate: this.startDate() || new Date(),
     })
   );
 
@@ -59,8 +66,8 @@ export class PollSettingsComponent extends QuestionBasePageComponent {
 
   override form = new FormGroup({
     resultsVisibility: new FormControl(true),
-    public: new FormControl(false),
-    startDate: new FormControl<Date>(null),
+    public: new FormControl(true),
+    startDate: new FormControl<Date>(null, Validators.required),
     endDate: new FormControl<Date>(null),
   });
 }

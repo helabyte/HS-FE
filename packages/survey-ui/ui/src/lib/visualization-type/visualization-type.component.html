@@ -68,11 +68,12 @@
         <button
           mat-raised-button
           color="default"
-          class="bg-gray-200 hover:bg-gray-300"
+          type="button"
+          (click)="navigatePrevStep()"
         >
           Back
         </button>
-        <div class="flex justify-end space-x-2">
+        <div class="flex justify-end gap-2">
           <button
             mat-raised-button
             color="basic"

@@ -1,23 +1,39 @@
-<div *ngIf="chartData" class="p-4">
-  <h2 class="text-xl font-semibold mb-4">{{ chartData.questionText }}</h2>
-
-  <div class="flex gap-4">
-    <div>
-      <div class="flex justify-between items-center">
-        <button
-          mat-icon-button
-          *ngIf="
-            chartData.chartType === 'bar' || chartData.chartType === 'line'
-          "
+<mat-card *ngIf="chartData()" class="max-w-2xl mx-auto">
+  <mat-card-header class="mb-4">
+    <mat-card-title>{{ chartData().questionText }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="grid grid-cols-1 gap-4">
+      <div *ngIf="chartData()" class="chart-container" #chartContainer>
+        <svg
+          *ngIf="chartData()?.chartType === 'pie'"
+          hlsPieChart
+          [chartData]="chartData()"
+          [width]="chartContainer.offsetWidth"
+        ></svg>
+        <svg
+          *ngIf="chartData()?.chartType === 'bar'"
+          hlsBarChart
+          [chartData]="chartData()"
+          [width]="chartContainer.offsetWidth"
+        ></svg>
+        <svg
+          *ngIf="chartData()?.chartType === 'line'"
+          hlsLineChart
+          [chartData]="chartData()"
+          [width]="chartContainer.offsetWidth"
+        ></svg>
+        <div
+          *ngIf="!['pie', 'bar', 'line'].includes(chartData()?.chartType ?? '')"
+          class="error-message"
         >
-          <mat-icon>share</mat-icon>
-        </button>
+          Unsupported chart type: {{ chartData()?.chartType }}
+        </div>
       </div>
-
-      <div #chartContainer></div>
+      <hls-poll [pollOptions]="pollData()" />
     </div>
-    <div>
-      <hls-poll />
-    </div>
-  </div>
-</div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button>SHARE</button>
+  </mat-card-actions>
+</mat-card>

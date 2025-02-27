@@ -1,68 +1,75 @@
 <div class="container">
   <mat-card class="max-w-2xl mx-auto">
-    <mat-card-header class="mb-4">
-      <mat-card-title> Question </mat-card-title>
+    <mat-card-header class="mb-8">
+      <mat-card-title> Question Form </mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="continue()">
         <mat-form-field class="w-full mb-4">
           <mat-label>Question Text</mat-label>
-          <input
+          <textarea
             matInput
-            placeholder="Enter your question"
+            placeholder="Enter your question..."
             formControlName="questionText"
             [ngClass]="{
               'is-invalid':
                 form.get('questionText')?.touched &&
                 form.get('questionText')?.invalid
             }"
-          />
+          ></textarea>
+
           <mat-error *ngIf="form.get('questionText')?.hasError('required')">
             Question text is required.
           </mat-error>
         </mat-form-field>
 
-        <div formArrayName="options">
+        <div
+          formArrayName="options"
+          cdkDropList
+          (cdkDropListDropped)="drop($event)"
+        >
           <div
             *ngFor="let option of optionForms.controls; let i = index"
             [formGroupName]="i"
-            class="flex items-center mb-2 space-x-2"
+            class="flex items-center justify-between mb-2 gap-2 bg-[var(--mat-sys-background)] px-4 py-5 rounded"
+            cdkDrag
           >
-            <ng-container
-              *ngIf="optionForms.at(i).get('inputType')?.value === 'text'"
-            >
-              <mat-form-field class="flex-grow">
-                <mat-label>{{
-                  optionForms.at(i).get('label')?.value
-                }}</mat-label>
-                <input
-                  matInput
-                  [value]="optionForms.at(i).get('value')?.value"
-                  readonly
-                />
-              </mat-form-field>
-            </ng-container>
+            <!-- Add cdkDrag here -->
+            <div class="flex gap-4 items-center flex-1">
+              <mat-icon cdkDragHandle>drag_indicator</mat-icon>
+              <ng-container *ngIf="option.get('inputType')?.value === 'text'">
+                <mat-form-field class="flex-grow max-w-[350px]">
+                  <mat-label>{{ option.get('label')?.value }}</mat-label>
+                  <input
+                    matInput
+                    [value]="option.get('value')?.value"
+                    readonly
+                  />
+                </mat-form-field>
+              </ng-container>
+              <ng-container
+                *ngIf="option.get('inputType')?.value === 'checkbox'"
+              >
+                <mat-checkbox [checked]="option.get('value')?.value">{{
+                  option.get('label')?.value
+                }}</mat-checkbox>
+              </ng-container>
+            </div>
 
-            <ng-container
-              *ngIf="optionForms.at(i).get('inputType')?.value === 'checkbox'"
-            >
-              <mat-checkbox [checked]="optionForms.at(i).get('value')?.value">{{
-                optionForms.at(i).get('label')?.value
-              }}</mat-checkbox>
-            </ng-container>
+            <div class="flex items-center gap-4">
+              <button mat-icon-button type="button" (click)="openDialog(i)">
+                <mat-icon>edit</mat-icon>
+              </button>
 
-            <button mat-icon-button (click)="openDialog(i)">
-              <mat-icon>edit</mat-icon>
-            </button>
-
-            <button
-              mat-icon-button
-              color="warn"
-              type="button"
-              (click)="removeOption(i)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
+              <button
+                mat-icon-button
+                color="warn"
+                type="button"
+                (click)="removeOption(i)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -76,7 +83,14 @@
           <mat-icon>add</mat-icon> Add Option
         </button>
 
-        <div class="flex justify-end space-x-2">
+        <div
+          *ngIf="optionForms.errors?.['minLengthArray'] && optionForms.touched"
+          class="text-[var(--mat-sys-error)] text-sm mt-1"
+        >
+          At least one option is required.
+        </div>
+
+        <div class="flex justify-end gap-2">
           <button
             mat-raised-button
             color="basic"

@@ -2,6 +2,10 @@
   <mat-toolbar>
     <div class="container mx-auto flex items-center justify-between">
       <div class="text-lg font-semibold">Platform's name</div>
+      <div class="flex gap-4">
+        <a mat-button [routerLink]="['/', 'questions'] | localize">Questions</a>
+      </div>
+      <div class="w-[130px]"></div>
     </div>
   </mat-toolbar>
 

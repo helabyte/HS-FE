@@ -16,7 +16,7 @@ html {
   );
 }
 
-@tailwind base;
+//@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -34,7 +34,7 @@ body {
 html {
   @include mat.card-overrides(
     (
-      container-color: 'white',
+      elevated-container-color: 'white',
     )
   );
   @include mat.table-overrides(

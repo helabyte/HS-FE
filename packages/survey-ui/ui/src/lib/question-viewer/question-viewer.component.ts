@@ -8,6 +8,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -26,6 +27,7 @@ import { QuestionType, SafeAnyType } from '@hela/survey-ui/utils';
     MatFormFieldModule,
     MatInputModule,
     MatButton,
+    MatCardModule,
   ],
   templateUrl: './question-viewer.component.html',
   styleUrl: './question-viewer.component.scss',

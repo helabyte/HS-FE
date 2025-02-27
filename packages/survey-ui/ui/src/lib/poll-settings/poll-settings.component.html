@@ -78,6 +78,9 @@
               />
               <mat-timepicker #startTimepicker />
               <mat-timepicker-toggle [for]="startTimepicker" matSuffix />
+              <mat-error *ngIf="form.get('startDate')?.hasError('required')">
+                Start date is required.
+              </mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -124,8 +127,10 @@
 
         <!-- Actions -->
         <div class="flex justify-between">
-          <button mat-button>Back</button>
-          <div class="flex justify-end space-x-2">
+          <button mat-button (click)="navigatePrevStep()" type="button">
+            Back
+          </button>
+          <div class="flex justify-end gap-2">
             <button
               mat-raised-button
               color="basic"
