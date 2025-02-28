@@ -14,6 +14,7 @@ type QuestionType = {
   endDate?: Date | string;
 };
 type QuestionOptionType = {
+  id?: string;
   inputType: string;
   label: string;
   value?: SafeAnyType;
