@@ -19,6 +19,7 @@
     "baseUrl": ".",
     "paths": {
       "@hela/survey-server": ["packages/survey-server/src/index.ts"],
+      "@hela/survey-shared": ["packages/survey-shared/src/index.ts"],
       "@hela/survey-ui": ["packages/survey-ui/src/index.ts"],
       "@hela/survey-ui/data-access": [
         "packages/survey-ui/data-access/src/index.ts"
