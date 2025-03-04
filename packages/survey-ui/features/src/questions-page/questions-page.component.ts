@@ -5,9 +5,10 @@ import { RouterLink } from '@angular/router';
 
 import { Subject, tap } from 'rxjs';
 
+import { QuestionType, SafeAnyType } from '@hela/survey-shared';
 import { RealtimeDatabaseService } from '@hela/survey-ui/data-access';
 import { QuestionTableComponent } from '@hela/survey-ui/ui';
-import { QuestionType, SafeAnyType } from '@hela/survey-ui/utils';
+import { QUESTION_DATA_SERVICE_TOKEN } from '@hela/survey-ui/utils';
 
 @Component({
   selector: 'hls-questions-page',
@@ -19,17 +20,21 @@ export class QuestionsPageComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<void>();
 
   private realtimeDatabaseService = inject(RealtimeDatabaseService);
+  private questionDataService = inject(QUESTION_DATA_SERVICE_TOKEN);
   dataSource = signal<QuestionType[]>([]);
 
   ngOnInit() {
-    this.realtimeDatabaseService
-      .listen('questions')
-      .pipe(
-        tap((value) =>
-          this.dataSource.set(this.convertToQuestionTypeArray(value))
-        )
-      )
-      .subscribe();
+    this.questionDataService
+      .getQuestions()
+      .subscribe((questions) => this.dataSource.set(questions));
+    // this.realtimeDatabaseService
+    //   .listen('questions')
+    //   .pipe(
+    //     tap((value) =>
+    //       this.dataSource.set(this.convertToQuestionTypeArray(value))
+    //     )
+    //   )
+    //   .subscribe();
   }
 
   ngOnDestroy() {
@@ -51,7 +56,7 @@ export class QuestionsPageComponent implements OnInit, OnDestroy {
         const questionData = data[key];
 
         // Basic structure, handling potential missing properties
-        const question: QuestionType = {
+        const question = {
           id: key, // Use the key as the ID
           questionText: questionData.questionText || '', // Default to empty string if missing
           chartType: questionData.chartType,
@@ -63,7 +68,7 @@ export class QuestionsPageComponent implements OnInit, OnDestroy {
           public: questionData.public,
           startDate: questionData.startDate || questionData.startDay, //Handle startDay/startDate
           endDate: questionData.endDate || questionData.endDay, //Handle endDay/endDate
-        };
+        } as QuestionType;
 
         Object.keys(question).forEach((key) =>
           (question as SafeAnyType)[key] === undefined

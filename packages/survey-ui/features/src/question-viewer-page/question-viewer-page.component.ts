@@ -10,9 +10,8 @@ import {
 } from '@hela/survey-ui/ui';
 import {
   getRandomNumber,
-  QuestionType,
-  SafeAnyType,
 } from '@hela/survey-ui/utils';
+import { QuestionType, SafeAnyType } from '@hela/survey-shared';
 
 @Component({
   selector: 'hls-question-viewer-page',

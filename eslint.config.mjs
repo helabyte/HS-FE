@@ -34,7 +34,7 @@ export default [
             // Angular related packages come first.
             ['^@angular', '^react', '^@nestjs'],
             // RxJS imports.
-            ['^rxjs', '^react-native'],
+            ['^rxjs', '^react-native','^mongoose'],
             // Third-party packages.
             ['^@?\\w'],
             // Side effect imports.

@@ -1,6 +1,7 @@
 import { inject, Injectable, OnDestroy } from '@angular/core';
 
-import { defer, Observable } from 'rxjs';
+import { defer, from, Observable, throwError } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 
 import { initializeApp } from 'firebase/app';
 import {
@@ -38,95 +39,112 @@ export class RealtimeDatabaseService implements OnDestroy {
   }
 
   /**
-   * Creates a new record.
+   * Creates a new record (Observable version).
    * - If `key` is provided, sets data at `path/key` (overwrites).
    * - If `key` is omitted, Firebase generates a unique ID (push at `path`).
    *
    * @param path The base path (e.g., 'users', 'products').
    * @param data The data to write (WITHOUT an `id` property).
    * @param key Optional. The key to use.  If omitted, Firebase generates one.
-   * @returns A Promise that resolves with the created data, INCLUDING the ID.
+   * @returns An Observable that emits the created data, INCLUDING the ID.
    */
-  async create<T extends object>(
+  create<T extends object>(
     path: string,
     data: Omit<T, 'id'>,
     key?: string
-  ): Promise<T & { id: string }> {
-    const ref = key ? this.dbRef(`${path}/${key}`) : push(this.dbRef(path));
-    const newKey = key || ref.key;
-    if (!newKey) {
-      throw new Error('Failed to generate a key for the new record.');
-    }
+  ): Observable<T & { id: string }> {
+    return defer(() => {
+      const ref = key ? this.dbRef(`${path}/${key}`) : push(this.dbRef(path));
+      const newKey = key || ref.key;
+      if (!newKey) {
+        return throwError(() => new Error('Failed to generate a key for the new record.'));
+      }
 
-    // Combine the data with the ID before writing
-    const dataWithId = { ...data, id: newKey } as T & { id: string };
-    await set(ref, dataWithId); // Write with the ID
-
-    return dataWithId;
+      const dataWithId = { ...data, id: newKey } as T & { id: string };
+      return from(set(ref, dataWithId)).pipe(
+        map(() => dataWithId),
+        catchError((error) => {
+          console.error('Error creating record:', error);
+          return throwError(() => error); // Rethrow for consistent error handling
+        })
+      );
+    });
   }
 
+
   /**
-   * Reads data from the specified path once.
+   * Reads data from the specified path once (Observable version).
    *
    * @param path The path to read.
-   * @returns A Promise that resolves with the data, or null if no data exists at the path.
+   * @returns An Observable that emits the data, or null if no data exists at the path.
    */
-  async read<T>(path: string): Promise<T | null> {
-    const snapshot: DataSnapshot = await get(this.dbRef(path));
-    if (snapshot.exists()) {
-      return snapshot.val() as T;
-    } else {
-      return null;
-    }
+  read<T>(path: string): Observable<T | null> {
+    return from(get(this.dbRef(path))).pipe(
+      map((snapshot: DataSnapshot) => (snapshot.exists() ? (snapshot.val() as T) : null)),
+      catchError(error => {
+        console.error("Error reading data:", error);
+        return throwError(() => error); // Consistent error handling
+      })
+    );
   }
 
   /**
-   * Reads a single record by its ID.
+   * Reads a single record by its ID (Observable version).
    *
    * @param basePath The base path for the data (e.g., 'users', 'products').
    * @param id The ID of the record to read.
-   * @returns A Promise that resolves with the data, or null if not found.
+   * @returns An Observable that emits the data, or null if not found.
    */
-  async readById<T>(basePath: string, id: string): Promise<T | null> {
+  readById<T>(basePath: string, id: string): Observable<T | null> {
     const fullPath = `${basePath}/${id}`;
     return this.read<T>(fullPath);
   }
 
   /**
-   * Updates a record.
+   * Updates a record (Observable version).
    *
    * @param basePath The base path for the data (e.g., 'users', 'products').
    * @param id The ID of the record to update.
    * @param data The partial data to update.
-   * @returns A Promise that resolves with the *complete* updated object, including the ID.
+   * @returns An Observable that emits the *complete* updated object, including the ID.
    */
-  async update<T extends object>(
+  update<T extends object>(
     basePath: string,
     id: string,
     data: Partial<Omit<T, 'id'>>
-  ): Promise<T> {
+  ): Observable<T> {
     const fullPath = `${basePath}/${id}`;
-    await update(this.dbRef(fullPath), data as Partial<object>);
-
-    const updatedData = await this.read<T>(fullPath);
-    if (!updatedData) {
-      throw new Error(
-        `Data at path ${fullPath} was unexpectedly null after update.`
-      );
-    }
-    return updatedData;
+    return from(update(this.dbRef(fullPath), data as Partial<object>)).pipe(
+      mergeMap(() => this.read<T>(fullPath)), // Use mergeMap to chain the read
+      map(updatedData => {
+        if (!updatedData) {
+          throw new Error(`Data at path ${fullPath} was unexpectedly null after update.`);
+        }
+        return updatedData;
+      }),
+      catchError(error => {
+        console.error("Error updating record:", error);
+        return throwError(() => error);
+      })
+    );
   }
 
+
   /**
-   * Deletes a record by ID.
+   * Deletes a record by ID (Observable version).
    *
    * @param basePath The base path for the data (e.g., 'users', 'products').
    * @param id The ID of the record to delete.
-   * @returns A Promise that resolves when the deletion is complete.
+   * @returns An Observable that emits void when the deletion is complete.
    */
-  async delete(basePath: string, id: string): Promise<void> {
+  delete(basePath: string, id: string): Observable<void> {
     const fullPath = `${basePath}/${id}`;
-    await remove(this.dbRef(fullPath));
+    return from(remove(this.dbRef(fullPath))).pipe(
+      catchError(error => {
+        console.error("Error deleting record:", error);
+        return throwError(() => error);
+      })
+    );
   }
 
   /**

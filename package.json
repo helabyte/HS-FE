@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "serve": "nx run-many -t serve -p sandbox-server sandbox"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +29,8 @@
     "@ngx-translate/core": "^16.0.4",
     "@ngx-translate/http-loader": "^16.0.1",
     "@types/d3": "^7.4.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "d3": "^7.9.0",
     "firebase": "^11.3.1",
     "miragejs": "^0.1.48",

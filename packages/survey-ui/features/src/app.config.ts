@@ -22,9 +22,14 @@ import {
 } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { APP_CONFIG_TOKEN, AppConfigType } from '@hela/survey-ui/utils';
+import {
+  APP_CONFIG_TOKEN,
+  AppConfigType,
+  QUESTION_DATA_SERVICE_TOKEN,
+} from '@hela/survey-ui/utils';
 
 import { appRoutes } from './app.routes';
+import { QuestionDataService } from '@hela/survey-ui/data-access';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './i18n/', '.json');
@@ -85,5 +90,6 @@ export const appConfig = (config: AppConfigType): ApplicationConfig => ({
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },
     },
+    { provide: QUESTION_DATA_SERVICE_TOKEN, useClass: QuestionDataService }, // Overrides the default service
   ],
 });

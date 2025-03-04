@@ -1,1 +1,2 @@
-export * from './lib/survey-shared';
+export * from './lib/question.type';
+export * from './lib/safe-any.type';

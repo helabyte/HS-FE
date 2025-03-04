@@ -24,8 +24,8 @@
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element">
       <div class="flex gap-2">
-        <a mat-button [routerLink]="[element.id]">Edit</a>
-        <a mat-button [routerLink]="[element.id, 'viewer']">View</a>
+        <a mat-button [routerLink]="[element._id]">Edit</a>
+        <a mat-button [routerLink]="[element._id, 'viewer']">View</a>
       </div>
     </td>
   </ng-container>

@@ -1,4 +1,4 @@
-import { QuestionType } from './question.type';
+import { QuestionType } from '@hela/survey-shared';
 
 type ChartDataType = Pick<QuestionType, 'options' | 'chartType'>;
 
