@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 
-import { SafeAnyType } from '@hela/survey-ui/utils';
+import { SafeAnyType } from '@hela/survey-shared';
 
 import { QuestionBasePageComponent } from '../question-base-form.component';
 

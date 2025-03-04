@@ -4,15 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
+import { QuestionType, SafeAnyType } from '@hela/survey-shared';
 import {
   ChartViewerComponent,
   QuestionViewerComponent,
 } from '@hela/survey-ui/ui';
-import {
-  getRandomNumber,
-  QuestionType,
-  SafeAnyType,
-} from '@hela/survey-ui/utils';
+import { getRandomNumber } from '@hela/survey-ui/utils';
 
 @Component({
   selector: 'hls-question-viewer-page',

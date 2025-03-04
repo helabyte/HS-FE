@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  api:
+    container_name: survey-api
+    build:
+      context: .
+      dockerfile: apps/sandbox-server/Dockerfile  # Path to your NestJS Dockerfile
+    ports:
+      - "3000:3000"  # Expose NestJS on port 3000
+    environment:
+      - MONGO_URL=mongodb://admin:password@mongo:27017/survey?authSource=admin # Connect to MongoDB service
+    depends_on:
+      - mongo  # Ensure MongoDB starts before NestJS
+
+  frontend:
+    container_name: survey-frontend
+    build:
+      context: .
+      dockerfile: apps/sandbox/Dockerfile  # Path to your Angular Dockerfile
+    ports:
+      - "80:80"  # Expose Angular on port 4200 (served by Nginx)
+    # No depends_on needed for the frontend in this simple setup
+
+  mongo:  # MongoDB Database
+    image: mongo:latest  # Use the official MongoDB image
+    ports:
+      - "27017:27017"  # Expose MongoDB port (optional, for direct access)
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=survey  # Initial database name
+    volumes:
+      - mongo-data:/data/db  # Persist MongoDB data (VERY IMPORTANT)
+
+volumes:
+  mongo-data:  # Define the named volume for MongoDB data

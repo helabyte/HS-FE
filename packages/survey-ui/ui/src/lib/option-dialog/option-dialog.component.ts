@@ -17,7 +17,7 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
-import { SafeAnyType } from '@hela/survey-ui/utils';
+import { SafeAnyType } from '@hela/survey-shared';
 
 type InputType = {
   value: string;

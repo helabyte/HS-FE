@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
-import { QuestionType, SafeAnyType } from '@hela/survey-ui/utils';
+import { QuestionType } from '@hela/survey-shared';
 
 import { QuestionBasePageComponent } from '../question-base-form.component';
 

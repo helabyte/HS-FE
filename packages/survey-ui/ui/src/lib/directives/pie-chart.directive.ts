@@ -2,7 +2,8 @@ import { Directive, effect, ElementRef, input, OnDestroy } from '@angular/core';
 
 import * as d3 from 'd3';
 
-import { ChartDataType, SafeAnyType } from '@hela/survey-ui/utils';
+import { SafeAnyType } from '@hela/survey-shared';
+import { ChartDataType } from '@hela/survey-ui/utils';
 
 @Directive({
   selector: '[hlsPieChart]',
@@ -12,7 +13,7 @@ export class PieChartDirective implements OnDestroy {
   chartData = input.required<ChartDataType>();
   width = input(300);
   height = input(300);
-  private svg: any;
+  private svg: SafeAnyType;
 
   constructor(private el: ElementRef) {
     effect(() => {
@@ -64,7 +65,7 @@ export class PieChartDirective implements OnDestroy {
         `translate(${this.width() / 2}, ${this.height() / 2})`
       ); // Center in total area
 
-    const pie = d3.pie<any>().value((d: any) => d.votes);
+    const pie = d3.pie<SafeAnyType>().value((d: SafeAnyType) => d.votes);
     const arc = d3.arc().outerRadius(radius).innerRadius(0); // Use the calculated radius
     const labelArc = d3
       .arc()
@@ -81,17 +82,20 @@ export class PieChartDirective implements OnDestroy {
     arcs
       .append('path')
       .attr('d', arc)
-      .attr('fill', (_d: any, i: number) => d3.schemeCategory10[i % 10])
+      .attr('fill', (_d: SafeAnyType, i: number) => d3.schemeCategory10[i % 10])
       .attr('class', 'cursor-pointer')
       .append('title')
-      .text((d: any) => `${d.data.label}: ${d.data.votes} votes`);
+      .text((d: SafeAnyType) => `${d.data.label}: ${d.data.votes} votes`);
 
     // Add text labels, ensuring they fit within the bounds
     arcs
       .append('text')
-      .attr('transform', (d: any) => `translate(${labelArc.centroid(d)})`)
+      .attr(
+        'transform',
+        (d: SafeAnyType) => `translate(${labelArc.centroid(d)})`
+      )
       .attr('dy', '.35em')
-      .text((d: any) => this.truncateText(d.data.label, radius * 0.7)) // Truncate long labels
+      .text((d: SafeAnyType) => this.truncateText(d.data.label, radius * 0.7)) // Truncate long labels
       .style('text-anchor', 'middle')
       .attr('class', 'text-gray-800');
   }

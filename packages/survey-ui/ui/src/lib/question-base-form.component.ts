@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, inject, output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { QuestionType } from '@hela/survey-ui/utils';
+import { QuestionType } from '@hela/survey-shared';
 
 @Component({
   standalone: true,

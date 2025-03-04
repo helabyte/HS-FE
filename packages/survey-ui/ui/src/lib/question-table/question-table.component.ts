@@ -4,7 +4,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 
-import { QuestionType } from '@hela/survey-ui/utils';
+import { QuestionType } from '@hela/survey-shared';
 
 @Component({
   selector: 'hls-question-table',

@@ -13,7 +13,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
-import { QuestionType, SafeAnyType } from '@hela/survey-ui/utils';
+import { QuestionType, SafeAnyType } from '@hela/survey-shared';
 
 @Component({
   selector: 'hls-question-viewer',

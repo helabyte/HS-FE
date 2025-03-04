@@ -1,11 +1,10 @@
-import { Location } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { LocalizeRouterService } from '@gilsdav/ngx-translate-router';
 
-import { RealtimeDatabaseService } from '@hela/survey-ui/data-access';
-import { QuestionType } from '@hela/survey-ui/utils';
+import { QuestionType } from '@hela/survey-shared';
+import { QUESTION_DATA_SERVICE_TOKEN } from '@hela/survey-ui/utils';
 
 @Component({
   standalone: true,
@@ -15,7 +14,7 @@ export abstract class QuestionBasePageComponent {
   id = input<string>();
   question = input<QuestionType>();
 
-  private realtimeDatabaseService = inject(RealtimeDatabaseService);
+  private questionDataService = inject(QUESTION_DATA_SERVICE_TOKEN);
   private router = inject(Router);
   private localize = inject(LocalizeRouterService);
 
@@ -23,25 +22,35 @@ export abstract class QuestionBasePageComponent {
 
   onDraft(value: Partial<QuestionType>) {
     if (this.question()) {
-      this.realtimeDatabaseService
-        .update('questions', this.id(), value)
-        .then(() => this.navigateDraft());
+      this.questionDataService
+        .updateQuestion(this.id(), { ...this.question(), ...value })
+        .subscribe({
+          next: () => this.navigateDraft(),
+        });
     } else {
-      this.realtimeDatabaseService
-        .create('questions', value)
-        .then(() => this.navigateDraft());
+      const { questionText, options } = value;
+      this.questionDataService
+        .createQuestion({ questionText, options })
+        .subscribe({
+          next: () => this.navigateDraft(),
+        });
     }
   }
 
   onSubmit(value: Partial<QuestionType>) {
     if (!this.question()) {
-      this.realtimeDatabaseService
-        .create('questions', value)
-        .then((result) => this.navigateNextStep(result.id));
+      const { questionText, options } = value;
+      this.questionDataService
+        .createQuestion({ questionText, options })
+        .subscribe({
+          next: (value) => this.navigateNextStep(value._id),
+        });
     } else {
-      this.realtimeDatabaseService
-        .update<QuestionType>('questions', this.id(), value)
-        .then(() => this.navigateNextStep());
+      this.questionDataService
+        .updateQuestion(this.id(), { ...this.question(), ...value })
+        .subscribe({
+          next: () => this.navigateNextStep(),
+        });
     }
   }
 
