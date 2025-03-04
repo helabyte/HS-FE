@@ -2,10 +2,11 @@ import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsDateString,
-  IsNotEmpty, IsObject,
+  IsNotEmpty,
+  IsObject,
   IsOptional,
   IsString,
-  ValidateNested
+  ValidateNested,
 } from 'class-validator';
 
 import { CreateQuestionOptionDto } from './create-question-option.dto';
@@ -52,4 +53,3 @@ export class CreateQuestionDto {
   @IsDateString()
   endDate?: string;
 }
-

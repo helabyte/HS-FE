@@ -23,7 +23,7 @@ export abstract class QuestionBasePageComponent {
   onDraft(value: Partial<QuestionType>) {
     if (this.question()) {
       this.questionDataService
-        .updateQuestion( this.id(),{...this.question() ,...value })
+        .updateQuestion(this.id(), { ...this.question(), ...value })
         .subscribe({
           next: () => this.navigateDraft(),
         });
@@ -46,9 +46,11 @@ export abstract class QuestionBasePageComponent {
           next: (value) => this.navigateNextStep(value._id),
         });
     } else {
-      this.questionDataService.updateQuestion(this.id(), {...this.question() ,...value }).subscribe({
-        next: () => this.navigateNextStep(),
-      });
+      this.questionDataService
+        .updateQuestion(this.id(), { ...this.question(), ...value })
+        .subscribe({
+          next: () => this.navigateNextStep(),
+        });
     }
   }
 

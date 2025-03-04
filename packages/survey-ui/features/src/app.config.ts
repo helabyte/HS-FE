@@ -22,6 +22,7 @@ import {
 } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+import { QuestionDataService } from '@hela/survey-ui/data-access';
 import {
   APP_CONFIG_TOKEN,
   AppConfigType,
@@ -29,7 +30,6 @@ import {
 } from '@hela/survey-ui/utils';
 
 import { appRoutes } from './app.routes';
-import { QuestionDataService } from '@hela/survey-ui/data-access';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './i18n/', '.json');

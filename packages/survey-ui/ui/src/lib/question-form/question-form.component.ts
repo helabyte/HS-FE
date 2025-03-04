@@ -23,9 +23,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
+import { QuestionOptionType } from '@hela/survey-shared';
+
 import { OptionDialogComponent } from '../option-dialog/option-dialog.component';
 import { QuestionBasePageComponent } from '../question-base-form.component';
-import { QuestionOptionType } from '@hela/survey-shared';
 
 @Component({
   selector: 'hls-question-form',

@@ -4,11 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
+import { QuestionType } from '@hela/survey-shared';
+
 import { BarChartDirective } from '../directives/bar-chart.directive';
 import { LineChartDirective } from '../directives/line-chart.directive';
 import { PieChartDirective } from '../directives/pie-chart.directive';
 import { PollComponent } from '../poll/poll.component';
-import { QuestionType } from '@hela/survey-shared';
 
 @Component({
   selector: 'hls-chart-viewer',

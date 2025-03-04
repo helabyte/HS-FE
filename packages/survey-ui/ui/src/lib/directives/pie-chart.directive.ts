@@ -90,7 +90,10 @@ export class PieChartDirective implements OnDestroy {
     // Add text labels, ensuring they fit within the bounds
     arcs
       .append('text')
-      .attr('transform', (d: SafeAnyType) => `translate(${labelArc.centroid(d)})`)
+      .attr(
+        'transform',
+        (d: SafeAnyType) => `translate(${labelArc.centroid(d)})`
+      )
       .attr('dy', '.35em')
       .text((d: SafeAnyType) => this.truncateText(d.data.label, radius * 0.7)) // Truncate long labels
       .style('text-anchor', 'middle')

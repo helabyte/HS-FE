@@ -57,7 +57,9 @@ export class RealtimeDatabaseService implements OnDestroy {
       const ref = key ? this.dbRef(`${path}/${key}`) : push(this.dbRef(path));
       const newKey = key || ref.key;
       if (!newKey) {
-        return throwError(() => new Error('Failed to generate a key for the new record.'));
+        return throwError(
+          () => new Error('Failed to generate a key for the new record.')
+        );
       }
 
       const dataWithId = { ...data, id: newKey } as T & { id: string };
@@ -71,7 +73,6 @@ export class RealtimeDatabaseService implements OnDestroy {
     });
   }
 
-
   /**
    * Reads data from the specified path once (Observable version).
    *
@@ -80,9 +81,11 @@ export class RealtimeDatabaseService implements OnDestroy {
    */
   read<T>(path: string): Observable<T | null> {
     return from(get(this.dbRef(path))).pipe(
-      map((snapshot: DataSnapshot) => (snapshot.exists() ? (snapshot.val() as T) : null)),
-      catchError(error => {
-        console.error("Error reading data:", error);
+      map((snapshot: DataSnapshot) =>
+        snapshot.exists() ? (snapshot.val() as T) : null
+      ),
+      catchError((error) => {
+        console.error('Error reading data:', error);
         return throwError(() => error); // Consistent error handling
       })
     );
@@ -116,19 +119,20 @@ export class RealtimeDatabaseService implements OnDestroy {
     const fullPath = `${basePath}/${id}`;
     return from(update(this.dbRef(fullPath), data as Partial<object>)).pipe(
       mergeMap(() => this.read<T>(fullPath)), // Use mergeMap to chain the read
-      map(updatedData => {
+      map((updatedData) => {
         if (!updatedData) {
-          throw new Error(`Data at path ${fullPath} was unexpectedly null after update.`);
+          throw new Error(
+            `Data at path ${fullPath} was unexpectedly null after update.`
+          );
         }
         return updatedData;
       }),
-      catchError(error => {
-        console.error("Error updating record:", error);
+      catchError((error) => {
+        console.error('Error updating record:', error);
         return throwError(() => error);
       })
     );
   }
-
 
   /**
    * Deletes a record by ID (Observable version).
@@ -140,8 +144,8 @@ export class RealtimeDatabaseService implements OnDestroy {
   delete(basePath: string, id: string): Observable<void> {
     const fullPath = `${basePath}/${id}`;
     return from(remove(this.dbRef(fullPath))).pipe(
-      catchError(error => {
-        console.error("Error deleting record:", error);
+      catchError((error) => {
+        console.error('Error deleting record:', error);
         return throwError(() => error);
       })
     );

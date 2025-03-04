@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document } from 'mongoose';
 
 import { SafeAnyType } from './safe-any.type';
 

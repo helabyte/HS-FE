@@ -12,9 +12,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
+import { QuestionType } from '@hela/survey-shared';
 
 import { QuestionBasePageComponent } from '../question-base-form.component';
-import { QuestionType } from '@hela/survey-shared';
 
 @Component({
   selector: 'hls-question-assignment',

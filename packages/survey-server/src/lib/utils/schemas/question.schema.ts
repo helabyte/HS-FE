@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-import { HydratedDocument,Schema as MongooseSchema } from 'mongoose';
+import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 
 import { QuestionType } from '@hela/survey-shared';
 
@@ -22,7 +22,9 @@ export class Question {
   @Prop()
   chartType?: string;
 
-  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'QuestionOption' }] }) // Reference QuestionOption
+  @Prop({
+    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'QuestionOption' }],
+  }) // Reference QuestionOption
   options?: QuestionOption[];
 
   @Prop()

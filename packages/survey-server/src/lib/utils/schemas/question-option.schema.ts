@@ -24,4 +24,5 @@ export class QuestionOption {
   value?: SafeAnyType;
 }
 
-export const QuestionOptionSchema = SchemaFactory.createForClass(QuestionOption);
+export const QuestionOptionSchema =
+  SchemaFactory.createForClass(QuestionOption);

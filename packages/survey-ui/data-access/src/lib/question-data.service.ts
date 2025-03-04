@@ -28,7 +28,10 @@ export class QuestionDataService implements QuestionDataServiceType {
     return this.http.get<QuestionType[]>('/api/questions');
   }
 
-  updateQuestion(id: string,question: Partial<QuestionType>): Observable<QuestionType> {
+  updateQuestion(
+    id: string,
+    question: Partial<QuestionType>
+  ): Observable<QuestionType> {
     return this.http.patch<QuestionType>(`/api/questions/${id}`, question);
   }
 }
