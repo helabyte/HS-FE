@@ -39,22 +39,23 @@ export class PollSettingsComponent extends QuestionBasePageComponent {
   public = input<boolean | null>();
   startDate = input<Date | null | SafeAnyType>();
   endDate = input<Date | null | SafeAnyType>();
+  defaultStartDate = input<Date | null | SafeAnyType>(new Date());
 
   resultsVisibilityEff = effect(() =>
     this.form.patchValue({
-      resultsVisibility: this.resultsVisibility() || true,
+      resultsVisibility: this.resultsVisibility(),
     })
   );
 
   publicEff = effect(() =>
     this.form.patchValue({
-      public: this.public() || true,
+      public: this.public(),
     })
   );
 
   startDayEff = effect(() =>
     this.form.patchValue({
-      startDate: this.startDate() || new Date(),
+      startDate: this.startDate() || this.defaultStartDate(),
     })
   );
 

@@ -1,6 +1,15 @@
-<hls-question-form
-  [questionText]="question()?.questionText"
-  [options]="question()?.options || []"
-  (submitEvent)="onSubmit($event)"
-  (draftEvent)="onDraft($event)"
-/>
+<div class="container">
+  <mat-card class="max-w-2xl mx-auto">
+    <mat-card-header class="mb-8">
+      <mat-card-title> Question Form</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <hls-question-form
+        [questionText]="question()?.questionText"
+        [options]="question()?.options || []"
+        (submitEvent)="onSubmit($event)"
+        (draftEvent)="onDraft($event)"
+      />
+    </mat-card-content>
+  </mat-card>
+</div>

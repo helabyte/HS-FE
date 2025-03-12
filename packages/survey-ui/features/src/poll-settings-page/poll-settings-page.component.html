@@ -1,7 +1,19 @@
-<hls-poll-settings
-  [resultsVisibility]="question()?.resultsVisibility"
-  [public]="question()?.public"
-  [startDate]="question()?.startDate"
-  [endDate]="question()?.endDate"
-  (submitEvent)="onSubmit($event)"
-/>
+<div class="container">
+  <mat-card class="max-w-2xl mx-auto">
+    <mat-card-header class="mb-4">
+      <mat-card-title> Poll Settings </mat-card-title>
+      <mat-card-subtitle>
+        Configure how your poll will behave and what participants can see.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <hls-poll-settings
+        [resultsVisibility]="question()?.resultsVisibility"
+        [public]="question()?.public"
+        [startDate]="question()?.startDate"
+        [endDate]="question()?.endDate"
+        (submitEvent)="onSubmit($event)"
+      />
+    </mat-card-content>
+  </mat-card>
+</div>

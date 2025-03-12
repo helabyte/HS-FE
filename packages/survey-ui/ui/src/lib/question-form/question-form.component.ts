@@ -4,7 +4,14 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop'; // Import Drag and Drop
 import { NgClass, NgForOf, NgIf } from '@angular/common';
-import { Component, effect, inject, input, output } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  output,
+  untracked,
+} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -42,7 +49,7 @@ import { QuestionBasePageComponent } from '../question-base-form.component';
     NgForOf,
     MatDialogModule,
     MatCardModule,
-    DragDropModule, // Add DragDropModule
+    DragDropModule,
   ],
   templateUrl: './question-form.component.html',
   styleUrl: './question-form.component.scss',
@@ -72,7 +79,7 @@ export class QuestionFormComponent extends QuestionBasePageComponent {
         this.optionForms.push(this.fb.group(option));
       }
     } else {
-      this.addOption();
+      untracked(() => !this.isReadonly() && this.addOption());
     }
     this.optionForms.updateValueAndValidity();
   });

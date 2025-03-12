@@ -19,11 +19,16 @@ export abstract class QuestionBasePageComponent {
   private localize = inject(LocalizeRouterService);
 
   nextRoute = '';
+  context = '';
 
   onDraft(value: Partial<QuestionType>) {
     if (this.question()) {
       this.questionDataService
-        .updateQuestion(this.id(), { ...this.question(), ...value })
+        .updateQuestion(this.id(), {
+          ...this.question(),
+          ...value,
+          context: this.context,
+        })
         .subscribe({
           next: () => this.navigateDraft(),
         });
@@ -47,7 +52,11 @@ export abstract class QuestionBasePageComponent {
         });
     } else {
       this.questionDataService
-        .updateQuestion(this.id(), { ...this.question(), ...value })
+        .updateQuestion(this.id(), {
+          ...this.question(),
+          ...value,
+          context: this.context,
+        })
         .subscribe({
           next: () => this.navigateNextStep(),
         });

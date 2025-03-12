@@ -1,6 +1,6 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { NgForOf, NgIf } from '@angular/common';
-import { Component, effect, input, output } from '@angular/core';
+import { Component, effect, input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -42,8 +42,10 @@ export class QuestionAssignmentComponent extends QuestionBasePageComponent {
   topics = input<string[]>();
   additionalOptions = input<QuestionType['additionalOptions']>();
 
+  defaultSurveyAssignment = input<string | null>('standalone');
+
   override form = new FormGroup({
-    surveyAssignment: new FormControl('standalone'),
+    surveyAssignment: new FormControl(''),
     topics: new FormControl([], { nonNullable: true }),
     additionalOptions: new FormGroup({
       searchable: new FormControl<boolean>(false),
@@ -53,7 +55,8 @@ export class QuestionAssignmentComponent extends QuestionBasePageComponent {
 
   surveyAssignmentEff = effect(() =>
     this.form.patchValue({
-      surveyAssignment: this.surveyAssignment() || 'standalone',
+      surveyAssignment:
+        this.surveyAssignment() || this.defaultSurveyAssignment(),
     })
   );
 
@@ -64,9 +67,7 @@ export class QuestionAssignmentComponent extends QuestionBasePageComponent {
   );
 
   additionalOptionsEff = effect(() =>
-    this.form.patchValue({
-      additionalOptions: this.additionalOptions(),
-    })
+    this.form.get('additionalOptions').patchValue(this.additionalOptions())
   );
 
   topicInputControl = new FormControl('');
@@ -78,7 +79,6 @@ export class QuestionAssignmentComponent extends QuestionBasePageComponent {
       this.topicsControl.patchValue([...this.topicsControl.value, value]);
     }
 
-    // Clear the input value
     event.chipInput!.clear();
     this.topicInputControl.setValue('');
   }
