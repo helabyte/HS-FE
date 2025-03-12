@@ -13,6 +13,8 @@ type QuestionType = {
   public?: boolean;
   startDate?: Date | string;
   endDate?: Date | string;
+  created: string;
+  updated: string;
 } & Partial<Document<string>>;
 type QuestionOptionType = {
   inputType: string;
@@ -21,4 +23,12 @@ type QuestionOptionType = {
   votes?: number;
 } & Partial<Document<string>>;
 
-export type { QuestionOptionType, QuestionType };
+type QuestionChangeLogType = {
+  question: QuestionType;
+  currentValue:  Partial<QuestionType>;
+  previousValue: Partial<QuestionType>;
+  context: string;
+  created: string;
+} & Partial<Document<string>>;
+
+export type { QuestionChangeLogType,QuestionOptionType, QuestionType };
