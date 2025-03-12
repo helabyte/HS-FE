@@ -5,7 +5,7 @@ import { SafeAnyType } from '@hela/survey-shared';
 export class CreateQuestionOptionDto {
   @IsOptional()
   @IsString() // Use string for MongoDB ObjectIDs
-  id?: string;
+  _id?: string;
 
   @IsNotEmpty()
   @IsString()

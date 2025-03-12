@@ -19,16 +19,19 @@ import { QuestionBasePageComponent } from '../question-base-form.component';
 })
 export class VisualizationTypeComponent extends QuestionBasePageComponent {
   chartType = input<string>();
+  defaultChartType = input<string | null>('pie');
 
   override form = new FormGroup({
     chartType: new FormControl('', Validators.required),
   });
 
   chartTypeEff = effect(() => {
-    this.form.patchValue({ chartType: this.chartType() || 'pie' });
+    this.form.patchValue({
+      chartType: this.chartType() || this.defaultChartType(),
+    });
   });
 
   selectChartType(type: string): void {
-    this.form.get('chartType')?.setValue(type);
+    if (!this.isReadonly()) this.form.get('chartType')?.setValue(type);
   }
 }

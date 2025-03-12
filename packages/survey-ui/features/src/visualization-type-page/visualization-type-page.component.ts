@@ -12,4 +12,5 @@ import { QuestionBasePageComponent } from '../question-base-page.component';
 })
 export class VisualizationTypePageComponent extends QuestionBasePageComponent {
   override nextRoute = 'poll-settings';
+  override context = 'visualization-type';
 }

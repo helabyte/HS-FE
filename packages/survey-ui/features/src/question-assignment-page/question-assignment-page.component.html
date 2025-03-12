@@ -1,7 +1,21 @@
-<hls-question-assignment
-  (submitEvent)="onSubmit($event)"
-  (draftEvent)="onDraft($event)"
-  [topics]="question()?.topics"
-  [additionalOptions]="question()?.additionalOptions"
-  [surveyAssignment]="question()?.surveyAssignment"
-/>
+<div class="container">
+  <mat-card class="max-w-2xl mx-auto">
+    <mat-card-header class="mb-4">
+      <mat-card-title>Question</mat-card-title>
+      <mat-card-subtitle>
+        Determine if the question is part of a survey by considering its context
+        and structure. Survey questions are typically designed to gather
+        specific information and often appear in a series.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <hls-question-assignment
+        (submitEvent)="onSubmit($event)"
+        (draftEvent)="onDraft($event)"
+        [topics]="question()?.topics"
+        [additionalOptions]="question()?.additionalOptions"
+        [surveyAssignment]="question()?.surveyAssignment"
+      />
+    </mat-card-content>
+  </mat-card>
+</div>

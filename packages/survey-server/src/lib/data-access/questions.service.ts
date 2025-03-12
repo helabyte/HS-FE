@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
 
+import { diff } from 'deep-object-diff';
+
 import { QuestionOptionType, QuestionType } from '@hela/survey-shared';
 
 import {
@@ -13,21 +15,22 @@ import {
   QuestionOption,
   QuestionOptionDocument,
   UpdateQuestionDto,
-  UpdateQuestionOptionDto,
 } from '../utils';
+
+import { QuestionChangeLogService } from './question-change-log.service';
 
 @Injectable()
 export class QuestionsService {
   constructor(
     @InjectModel(Question.name) private questionModel: Model<QuestionDocument>,
     @InjectModel(QuestionOption.name)
-    private questionOptionModel: Model<QuestionOptionDocument>
+    private questionOptionModel: Model<QuestionOptionDocument>,
+    private questionChangeLogService: QuestionChangeLogService
   ) {}
 
   async create(createQuestionDto: CreateQuestionDto): Promise<QuestionType> {
     const { options, ...questionData } = createQuestionDto;
 
-    // Create options first, if provided
     let createdOptionIds: string[] = [];
     if (options && options.length > 0) {
       const createdOptions = await this.questionOptionModel.insertMany(options);
@@ -35,11 +38,12 @@ export class QuestionsService {
     }
     const createdQuestion = new this.questionModel({
       ...questionData,
-      options: createdOptionIds, // Assign the IDs of created options
+      options: createdOptionIds,
     });
 
     return createdQuestion.save();
   }
+
   async createOption(
     createQuestionOptionDto: CreateQuestionOptionDto
   ): Promise<QuestionOptionType> {
@@ -48,10 +52,11 @@ export class QuestionsService {
   }
 
   async findAll(): Promise<QuestionType[]> {
-    return this.questionModel.find().populate('options').exec();
-  }
-  async findAlloptions(): Promise<QuestionOption[]> {
-    return this.questionOptionModel.find().exec();
+    return this.questionModel
+      .find()
+      .populate('options')
+      .sort({ created: 'desc' })
+      .exec();
   }
 
   async findOne(id: string): Promise<QuestionType> {
@@ -64,80 +69,76 @@ export class QuestionsService {
     }
     return question;
   }
-  async findOptionOne(id: string): Promise<QuestionOption> {
-    const option = await this.questionOptionModel.findById(id).exec();
-    if (!option) {
-      throw new NotFoundException(`Question option with ID "${id}" not found`);
-    }
-    return option;
-  }
 
   async update(
     id: string,
     updateQuestionDto: UpdateQuestionDto
   ): Promise<QuestionType> {
-    const { options, ...questionData } = updateQuestionDto;
-    // Handle option updates/creation/deletion
+    const { options, context, ...questionData } = updateQuestionDto;
+    const oldQuestion = await this.questionModel
+      .findById(id)
+      .populate({
+        path: 'options',
+        select: '-created -updated',
+      })
+      .select('-created -updated')
+      .exec();
+
     const updatedOptionIds: string[] = [];
     if (options) {
       for (const option of options) {
-        if (option.id) {
-          // Update existing option
+        if (option._id) {
           await this.questionOptionModel
-            .findByIdAndUpdate(option.id, option, { new: true })
+            .findByIdAndUpdate(option._id, option)
             .exec();
-          updatedOptionIds.push(option.id); //Keep Id if Updated
+          updatedOptionIds.push(option._id);
         } else {
-          // Create new option
           const createdOption = await this.createOption(
             option as CreateQuestionOptionDto
           );
-          updatedOptionIds.push(createdOption._id); //push id to add
+          updatedOptionIds.push(createdOption._id);
         }
       }
     }
 
-    //Delete old Options
-    const OldQuestion = await this.questionModel.findById(id).exec();
-    if (OldQuestion) {
-      const oldOptionIds = OldQuestion.options.map((op) => op.toString());
-      const optionsToDelete = oldOptionIds.filter(
-        (optionId) => !updatedOptionIds.includes(optionId)
-      );
-      await this.questionOptionModel.deleteMany({
-        _id: { $in: optionsToDelete },
-      });
-    }
-
     const updatedQuestion = await this.questionModel
-      .findByIdAndUpdate(
-        id,
-        {
-          ...questionData,
-          options: updatedOptionIds, // Assign the IDs of created options
-        },
-        { new: true }
-      )
+      .findByIdAndUpdate(id, {
+        ...questionData,
+        options: updatedOptionIds, // Assign the IDs of created options
+      })
       .populate('options')
       .exec();
 
     if (!updatedQuestion) {
       throw new NotFoundException(`Question with ID "${id}" not found`);
     }
-    return updatedQuestion;
-  }
 
-  async updateOption(
-    id: string,
-    updateQuestionOptionDto: UpdateQuestionOptionDto
-  ): Promise<QuestionOption> {
-    const updatedOption = await this.questionOptionModel
-      .findByIdAndUpdate(id, updateQuestionOptionDto, { new: true })
+    const updatedFoundQuestion = await this.questionModel
+      .findById(id)
+      .populate({
+        path: 'options',
+        select: '-created -updated',
+      })
+      .select('-created -updated')
       .exec();
-    if (!updatedOption) {
-      throw new NotFoundException(`Option with ID "${id}" not found`);
+
+    const oldParsed = JSON.parse(JSON.stringify(oldQuestion));
+    const updatedParsed = JSON.parse(
+      JSON.stringify(updatedFoundQuestion.toObject())
+    );
+
+    const diffQuestion = diff(oldParsed, updatedParsed);
+
+    if (diffQuestion && Object.keys(diffQuestion).length > 0) {
+      await this.questionChangeLogService.create({
+        question: updatedQuestion,
+        previousValue: oldParsed,
+        currentValue: updatedParsed,
+        context,
+      });
     }
-    return updatedOption;
+
+    return updatedQuestion;
   }
 
   async remove(id: string): Promise<void> {
@@ -150,12 +151,6 @@ export class QuestionsService {
 
     if (!result) {
       throw new NotFoundException(`Question with ID "${id}" not found`);
-    }
-  }
-  async removeOption(id: string): Promise<void> {
-    const result = await this.questionOptionModel.findByIdAndDelete(id).exec();
-    if (!result) {
-      throw new NotFoundException(`Question option with ID "${id}" not found`);
     }
   }
 }

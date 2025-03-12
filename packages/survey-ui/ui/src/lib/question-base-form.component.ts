@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, inject, output } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { QuestionType } from '@hela/survey-shared';
@@ -11,10 +11,13 @@ import { QuestionType } from '@hela/survey-shared';
 export abstract class QuestionBasePageComponent {
   submitEvent = output<Partial<QuestionType>>();
   draftEvent = output<Partial<QuestionType>>();
+  isReadonly = input<boolean>();
 
   form: FormGroup;
 
   private location = inject(Location);
+
+  isReadonlyEff = effect(() => this.isReadonly() && this.form.disable());
 
   saveAsDraft(): void {
     console.log('Saving as Draft:', this.form.value);

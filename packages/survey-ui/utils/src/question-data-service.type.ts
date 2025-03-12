@@ -10,7 +10,7 @@ type QuestionDataServiceType = {
   ) => Observable<QuestionType>;
   updateQuestion: (
     id: string,
-    question: Partial<QuestionType>
+    question: Partial<QuestionType> & { context: string }
   ) => Observable<QuestionType>;
   deleteQuestion: (id: string) => Observable<QuestionType>;
 };

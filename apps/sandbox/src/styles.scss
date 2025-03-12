@@ -26,6 +26,7 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
@@ -42,4 +43,21 @@ html {
       background-color: 'white',
     )
   );
+}
+
+.docs-example-viewer-wrapper {
+  border-radius: 12px;
+  border: 1px solid var(--mat-sys-outline-variant);
+}
+
+.docs-example-viewer-title {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  padding: 16px 16px 0 24px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.docs-example-viewer-body {
+  padding: 16px 24px;
 }

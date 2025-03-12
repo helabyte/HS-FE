@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { QuestionType } from '@hela/survey-shared';
+import { QuestionChangeLogType, QuestionType } from '@hela/survey-shared';
 import { QuestionDataServiceType } from '@hela/survey-ui/utils';
 
 @Injectable({
@@ -33,5 +33,11 @@ export class QuestionDataService implements QuestionDataServiceType {
     question: Partial<QuestionType>
   ): Observable<QuestionType> {
     return this.http.patch<QuestionType>(`/api/questions/${id}`, question);
+  }
+
+  getChangelogs(questionId: string) {
+    return this.http.get<QuestionChangeLogType[]>(
+      `/api/questions/${questionId}/logs`
+    );
   }
 }
