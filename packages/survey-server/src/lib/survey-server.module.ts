@@ -4,7 +4,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { HealthModule } from './features/health/health.module';
 import databaseConfig from './utils/config/database.config';
-import { QuestionChangeLogService, QuestionOptionsService, QuestionsService } from './data-access';
+import {
+  QuestionChangeLogService,
+  QuestionOptionsService,
+  QuestionsService,
+} from './data-access';
 import { QuestionChangeLogController, QuestionsController } from './features';
 import {
   Question,
@@ -37,8 +41,12 @@ import {
     ]),
     HealthModule,
   ],
-  controllers: [QuestionsController,QuestionChangeLogController],
-  providers: [QuestionsService, QuestionOptionsService, QuestionChangeLogService],
+  controllers: [QuestionsController, QuestionChangeLogController],
+  providers: [
+    QuestionsService,
+    QuestionOptionsService,
+    QuestionChangeLogService,
+  ],
   exports: [],
 })
 export class SurveyServerModule {}

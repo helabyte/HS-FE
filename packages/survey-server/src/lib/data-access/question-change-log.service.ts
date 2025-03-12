@@ -15,30 +15,29 @@ export class QuestionChangeLogService {
   ) {}
 
   async create(
-    createQuestionChangeLogDto: Pick<QuestionChangeLogType, 'question'| 'currentValue' | 'previousValue'> & {context: string}
+    createQuestionChangeLogDto: Pick<
+      QuestionChangeLogType,
+      'question' | 'currentValue' | 'previousValue'
+    > & { context: string }
   ): Promise<QuestionChangeLog> {
-    const createdChangeLog = new this.questionChangeLogModel(createQuestionChangeLogDto);
+    const createdChangeLog = new this.questionChangeLogModel(
+      createQuestionChangeLogDto
+    );
     return createdChangeLog.save();
   }
-
 
   async findByQuestionId(questionId: string): Promise<QuestionChangeLog[]> {
     return this.questionChangeLogModel
       .find({ question: questionId })
-      .sort({ created: 'desc'})
+      .sort({ created: 'desc' })
       .exec();
   }
 
   async findOne(id: string): Promise<QuestionChangeLog> {
-    const changelog = await this.questionChangeLogModel
-      .findById(id)
-      .exec();
+    const changelog = await this.questionChangeLogModel.findById(id).exec();
     if (!changelog) {
       throw new NotFoundException(`Changelog with ID "${id}" not found`);
     }
     return changelog;
   }
-
-
-
 }

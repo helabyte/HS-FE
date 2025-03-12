@@ -2,7 +2,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 
-import { QuestionChangeLogType, QuestionType, SafeAnyType } from '@hela/survey-shared';
+import {
+  QuestionChangeLogType,
+  QuestionType,
+  SafeAnyType,
+} from '@hela/survey-shared';
 
 export type QuestionChangeLogDocument = HydratedDocument<QuestionChangeLogType>;
 
@@ -20,7 +24,6 @@ export class QuestionChangeLog {
   })
   question: QuestionType;
 
-
   // @Prop({ type: MongooseSchema.Types.Mixed, required: true })
   // diff?: SafeAnyType;
 
@@ -34,4 +37,5 @@ export class QuestionChangeLog {
   context: string;
 }
 
-export const QuestionChangeLogSchema = SchemaFactory.createForClass(QuestionChangeLog);
+export const QuestionChangeLogSchema =
+  SchemaFactory.createForClass(QuestionChangeLog);
