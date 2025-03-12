@@ -1,0 +1,123 @@
+<div class="container">
+  <mat-card>
+    <mat-card-header class="mb-8">
+      <mat-card-title>
+        {{ changelog().context }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ changelog().created | date }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      @let previousValue = changelog()?.previousValue; @let currentValue =
+      changelog()?.currentValue; @switch (this.changelog().context) { @case
+      ('basic-info') {
+      <div class="grid grid-cols-2 gap-4">
+        <div class="docs-example-viewer-wrapper">
+          <div class="docs-example-viewer-title">Current Version</div>
+          <div class="docs-example-viewer-body">
+            <hls-question-form
+              [questionText]="currentValue.questionText"
+              [options]="currentValue.options || []"
+              [isReadonly]="true"
+            />
+          </div>
+        </div>
+
+        <div class="docs-example-viewer-wrapper">
+          <div class="docs-example-viewer-title">Previous Version</div>
+          <div class="docs-example-viewer-body">
+            <hls-question-form
+              [questionText]="previousValue.questionText"
+              [options]="previousValue.options || []"
+              [isReadonly]="true"
+            />
+          </div>
+        </div>
+      </div>
+      } @case ('visualization-type') {
+      <div class="grid grid-cols-1 gap-4">
+        <div class="docs-example-viewer-wrapper">
+          <div class="docs-example-viewer-title">Current Version</div>
+          <div class="docs-example-viewer-body">
+            <hls-visualization-type
+              [chartType]="currentValue.chartType"
+              [isReadonly]="true"
+              [defaultChartType]="null"
+            />
+          </div>
+        </div>
+
+        <div class="docs-example-viewer-wrapper">
+          <div class="docs-example-viewer-title">Previous Version</div>
+          <div class="docs-example-viewer-body">
+            <hls-visualization-type
+              [chartType]="previousValue.chartType"
+              [isReadonly]="true"
+              [defaultChartType]="null"
+            />
+          </div>
+        </div>
+      </div>
+
+      } @case ('poll-settings') {
+      <div class="grid grid-cols-2 gap-4">
+        <div class="docs-example-viewer-wrapper">
+          <div class="docs-example-viewer-title">Current Version</div>
+          <div class="docs-example-viewer-body">
+            <hls-poll-settings
+              [resultsVisibility]="currentValue?.resultsVisibility"
+              [public]="currentValue?.public"
+              [startDate]="currentValue?.startDate"
+              [endDate]="currentValue?.endDate"
+              [defaultStartDate]="null"
+              [isReadonly]="true"
+            />
+          </div>
+        </div>
+        <div class="docs-example-viewer-wrapper">
+          <div class="docs-example-viewer-title">Previous Version</div>
+          <div class="docs-example-viewer-body">
+            <hls-poll-settings
+              [resultsVisibility]="previousValue?.resultsVisibility"
+              [public]="previousValue?.public"
+              [startDate]="previousValue?.startDate"
+              [endDate]="previousValue?.endDate"
+              [defaultStartDate]="null"
+              [isReadonly]="true"
+            />
+          </div>
+        </div>
+      </div>
+      } @case ('question-assignment') {
+      <div class="grid grid-cols-2 gap-4">
+        <div class="docs-example-viewer-wrapper">
+          <div class="docs-example-viewer-title">Current Version</div>
+          <div class="docs-example-viewer-body">
+            <hls-question-assignment
+              [topics]="currentValue?.topics"
+              [additionalOptions]="currentValue?.additionalOptions"
+              [surveyAssignment]="currentValue?.surveyAssignment"
+              [isReadonly]="true"
+              [defaultSurveyAssignment]="null"
+            />
+          </div>
+        </div>
+        <div class="docs-example-viewer-wrapper">
+          <div class="docs-example-viewer-title">Previous Version</div>
+          <div class="docs-example-viewer-body">
+            <hls-question-assignment
+              [topics]="previousValue?.topics"
+              [additionalOptions]="previousValue?.additionalOptions"
+              [surveyAssignment]="previousValue?.surveyAssignment"
+              [isReadonly]="true"
+              [defaultSurveyAssignment]="null"
+            />
+          </div>
+        </div>
+      </div>
+
+      } }
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,42 @@
+<div class="container">
+  <mat-card class="max-w-2xl mx-auto">
+    <mat-card-content>
+      <div class="flex flex-col gap-4">
+        <div class="docs-example-viewer-wrapper">
+          <div class="docs-example-viewer-title">
+            <h1 class="mb-0">
+              {{ question().questionText }}
+            </h1>
+          </div>
+          <div class="docs-example-viewer-body">
+            <mat-list role="list">
+              <mat-list-item role="listitem">
+                Created: {{ question().created | date }}
+              </mat-list-item>
+              <mat-list-item role="listitem"
+                >Last Modified: {{ question().updated | date }}</mat-list-item
+              >
+            </mat-list>
+          </div>
+        </div>
+        <div class="docs-example-viewer-wrapper">
+          <div class="docs-example-viewer-title">Question history</div>
+          <div class="docs-example-viewer-body max-h-[250px] overflow-auto">
+            <mat-nav-list>
+              @for (log of logs(); track log._id; let i = $index) {
+              <a mat-list-item [routerLink]="['changelog', log._id]">
+                <div class="flex justify-between">
+                  <span>{{ logs().length - i }}. {{ log.context }}</span>
+                  <small>
+                    {{ log.created | date }}
+                  </small>
+                </div>
+              </a>
+              }
+            </mat-nav-list>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

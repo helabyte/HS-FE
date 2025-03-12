@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 
+import { changelogResolver } from './changelog.resolver';
 import { questionResolver } from './question.resolver';
 
 export const appRoutes: Route[] = [
@@ -89,6 +90,33 @@ export const appRoutes: Route[] = [
                       import(
                         './question-viewer-page/question-viewer-page.component'
                       ).then((c) => c.QuestionViewerPageComponent),
+                  },
+                  {
+                    path: 'info',
+                    children: [
+                      {
+                        path: '',
+                        loadComponent: () =>
+                          import(
+                            './question-info-page/question-info-page.component'
+                          ).then((c) => c.QuestionInfoPageComponent),
+                      },
+                      {
+                        path: 'changelog',
+                        children: [
+                          {
+                            path: ':changelogId',
+                            loadComponent: () =>
+                              import(
+                                './change-log-info/change-log-info.component'
+                              ).then((c) => c.ChangeLogInfoComponent),
+                            resolve: {
+                              changelog: changelogResolver,
+                            },
+                          },
+                        ],
+                      },
+                    ],
                   },
                 ],
               },
